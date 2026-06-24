@@ -2,66 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Blueprint\StoreBluePrintRequest;
-use App\Http\Requests\Blueprint\UpdateBluePrintRequest;
+use App\Http\Requests\BlueprintRequest\StoreBluePrintRequest;
+use App\Http\Requests\BlueprintRequest\UpdateBluePrintRequest;
 use App\Http\Resources\BluePrintResource;
 use App\Models\Blueprint;
-use Illuminate\Http\Request;
 
 class BluePrintController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = auth()->user();
 
-        $blueprints = $user->bluePrints;
+        $blueprints = $user->bluePrints()->with('createdBy')->get();
 
-        $data = [
-            'blueprints' => BluePrintResource::collection($blueprints)
-        ];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'blueprints' => BluePrintResource::collection($blueprints),
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function archived()
+    {
+        $user = auth()->user();
+
+        $blueprints = $user->bluePrints()->onlyTrashed()->with('createdBy')->get();
+
+        return response()->json([
+            'blueprints' => BluePrintResource::collection($blueprints),
+        ], 200);
+    }
+
     public function store(StoreBluePrintRequest $request)
     {
         $validated = $request->validated();
 
         $blueprint = Blueprint::create([
             ...$validated,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ]);
 
-        $data = [
-            'blueprint' => BluePrintResource::collection($blueprint)
-        ];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Blueprint created successfully.',
+            'blueprint' => BluePrintResource::make($blueprint),
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Blueprint $blueprint)
     {
         $this->authorize('view', $blueprint);
 
-        $data = [
-            'blueprint' => BluePrintResource::collection($blueprint)
-        ];
+        $blueprint->load('createdBy');
 
-        return response()->json($data, 200);
+        return response()->json([
+            'blueprint' => BluePrintResource::make($blueprint),
+        ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateBluePrintRequest $request, Blueprint $blueprint)
     {
         $this->authorize('update', $blueprint);
@@ -70,25 +65,21 @@ class BluePrintController extends Controller
 
         $blueprint->update($validated);
 
-        $data = [
-            'blueprint' => BluePrintResource::collection($blueprint)
-        ];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Blueprint updated successfully.',
+            'blueprint' => BluePrintResource::make($blueprint),
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function archive(Blueprint $blueprint)
     {
         $this->authorize('delete', $blueprint);
 
         $blueprint->delete();
 
-        $data = [];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Blueprint archived successfully.',
+        ], 200);
     }
 
     public function restore(Blueprint $blueprint)
@@ -97,11 +88,10 @@ class BluePrintController extends Controller
 
         $blueprint->restore();
 
-        $data = [
-            'blueprint' => BluePrintResource::collection($blueprint)
-        ];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Blueprint restored successfully.',
+            'blueprint' => BluePrintResource::make($blueprint),
+        ], 200);
     }
 
     public function forceDelete(Blueprint $blueprint)
@@ -110,8 +100,8 @@ class BluePrintController extends Controller
 
         $blueprint->forceDelete();
 
-        $data = [];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Blueprint permanently deleted.',
+        ], 200);
     }
 }

@@ -12,7 +12,7 @@ enum PostStatus: string
     // This method returns the human-readable label
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::InReview => 'In Review',
             self::Draft => 'Draft',
             self::Posted => 'Posted',
@@ -20,4 +20,3 @@ enum PostStatus: string
         };
     }
 }
-

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\Blueprint;
+namespace App\Http\Requests\BlueprintRequest;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBluePrintRequest extends FormRequest

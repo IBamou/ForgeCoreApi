@@ -8,43 +8,38 @@ use Illuminate\Auth\Access\Response;
 
 class BlueprintPolicy
 {
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Blueprint $blueprint): bool
+    public function view(User $user, Blueprint $blueprint): Response
     {
-        return $user->is($blueprint->createdBy);
+        return $user->is($blueprint->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this blueprint.');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Blueprint $blueprint): bool
+    public function update(User $user, Blueprint $blueprint): Response
     {
-        return $user->is($blueprint->createdBy);
+        return $user->is($blueprint->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this blueprint.');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Blueprint $blueprint): bool
+    public function delete(User $user, Blueprint $blueprint): Response
     {
-        return $user->is($blueprint->createdBy);
+        return $user->is($blueprint->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this blueprint.');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Blueprint $blueprint): bool
+    public function restore(User $user, Blueprint $blueprint): Response
     {
-        return $user->is($blueprint->createdBy);;
+        return $user->is($blueprint->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this blueprint.');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Blueprint $blueprint): bool
+    public function forceDelete(User $user, Blueprint $blueprint): Response
     {
-        return $user->is($blueprint->createdBy);
+        return $user->is($blueprint->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this blueprint.');
     }
 }

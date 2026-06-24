@@ -8,76 +8,72 @@ use Illuminate\Http\Request;
 
 class InputController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = auth()->user();
 
-        $inputs = $user->inputs();
+        $inputs = $user->inputs()->with('createdBy')->get();
 
-
-        $data =  [
-            'inputs' => InputResource::collection($inputs)
-        ];
-
-        return response()->json($data);
+        return response()->json([
+            'inputs' => InputResource::collection($inputs),
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function archived()
+    {
+        $user = auth()->user();
+
+        $inputs = $user->inputs()->onlyTrashed()->with('createdBy')->get();
+
+        return response()->json([
+            'inputs' => InputResource::collection($inputs),
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string',
-            'raw_input' => 'required|string'
+            'raw_input' => 'required|string',
         ]);
 
-        $input = Input::create($validated);
+        $input = Input::create([
+            ...$validated,
+            'user_id' => auth()->id(),
+        ]);
 
-        $data = [
-            'input' => InputResource::collection($input)
-        ];
-
-        return response()->json($data);
+        return response()->json([
+            'message' => 'Input created successfully.',
+            'input' => InputResource::make($input),
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Input $input)
     {
         $this->authorize('view', $input);
 
-        $data = [
-            'input' => InputResource::collection($input)
-        ];
+        $input->load('createdBy');
 
-        return response()->json($data);
+        return response()->json([
+            'input' => InputResource::make($input),
+        ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Input $input)
     {
         $this->authorize('update', $input);
 
         $validated = $request->validate([
             'title' => 'sometimes|string',
-            'raw_input' => 'somtimes|string'
+            'raw_input' => 'sometimes|string',
         ]);
 
         $input->update($validated);
 
-        $data = [
-            'input' => InputResource::collection($input)
-        ];
-
-        return response()->json($data);
-
+        return response()->json([
+            'message' => 'Input updated successfully.',
+            'input' => InputResource::make($input),
+        ], 200);
     }
 
     public function archive(Input $input)
@@ -86,9 +82,9 @@ class InputController extends Controller
 
         $input->delete();
 
-        $data = [];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Input archived successfully.',
+        ], 200);
     }
 
     public function restore(Input $input)
@@ -97,11 +93,10 @@ class InputController extends Controller
 
         $input->restore();
 
-        $data = [
-            'input' => inputResource::collection($input)
-        ];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Input restored successfully.',
+            'input' => InputResource::make($input),
+        ], 200);
     }
 
     public function forceDelete(Input $input)
@@ -110,8 +105,8 @@ class InputController extends Controller
 
         $input->forceDelete();
 
-        $data = [];
-
-        return response()->json($data, 200);
+        return response()->json([
+            'message' => 'Input permanently deleted.',
+        ], 200);
     }
 }

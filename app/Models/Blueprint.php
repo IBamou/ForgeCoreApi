@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blueprint extends Model
 {
-
     use SoftDeletes;
-    
+
     protected $fillable = [
         'user_id', 'name', 'description',
         'tone', 'target_platform', 'max_length',
@@ -29,17 +28,17 @@ class Blueprint extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function inputs(): BelongsToMany
     {
-        return $this->belongsToMany(Blueprint::class, 'configurations');
+        return $this->belongsToMany(Input::class, 'configurations');
     }
 
     public function configurations(): HasMany
     {
-        return $this->hasMany(Blueprint::class, 'blueprint_id');
+        return $this->hasMany(Configuration::class, 'blueprint_id');
     }
 
     public function posts()

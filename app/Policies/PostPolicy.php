@@ -8,51 +8,52 @@ use Illuminate\Auth\Access\Response;
 
 class PostPolicy
 {
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Post $post): bool
+    public function view(User $user, Post $post): Response
     {
-        return $user->is($post->createdBy);
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Post $post): bool
+    public function update(User $user, Post $post): Response
     {
-        return $user->is($post->createdBy);
-
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function updateStatus(User $user, Post $post) {
-        return $user->is($post->createdBy);
+    public function updateStatus(User $user, Post $post): Response
+    {
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Post $post): bool
+    public function delete(User $user, Post $post): Response
     {
-        return $user->is($post->createdBy);;
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Post $post): bool
+    public function restore(User $user, Post $post): Response
     {
-        return $user->is($post->createdBy);;
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Post $post): bool
+    public function forceDelete(User $user, Post $post): Response
     {
-       return $user->is($post->createdBy);e;
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
+    }
+
+    public function retry(User $user, Post $post): Response
+    {
+        return $user->is($post->createdBy)
+            ? Response::allow()
+            : Response::deny('You do not own this post.');
     }
 }

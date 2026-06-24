@@ -3,7 +3,6 @@
 namespace App\Http\Requests\PostRequest;
 
 use App\Enums\PostStatus;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
