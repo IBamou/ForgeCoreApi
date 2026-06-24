@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('input_id')->constrained('inputs')->cascadeOnDelete();
             $table->foreignId('blueprint_id')->constrained('blueprints')->cascadeOnDelete();
 
-            
             $table->timestamps();
         });
     }

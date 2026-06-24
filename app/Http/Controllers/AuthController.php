@@ -23,13 +23,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-
         $data = [
             'token' => $token,
-            'user' => UserResource::collection($user),
+            'user' => UserResource::make($user),
         ];
 
-        return response()->json($data);
+        return response()->json($data, 201);
     }
 
     public function login(LoginRequest $request)
@@ -55,10 +54,10 @@ class AuthController extends Controller
 
         $data = [
             'token' => $token,
-            'user' => UserResource::collection($user),
+            'user' => UserResource::make($user),
         ];
 
-        return response()->json($data);
+        return response()->json($data, 200);
     }
 
     public function logout(Request $request)
@@ -67,10 +66,10 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Logged out',
-        ]);
+        ], 200);
     }
 
-    public function cleanTokens($user, $maxTokens)
+    public function cleanTokens(User $user, int $maxTokens): void
     {
         if ($user->tokens()->count() >= $maxTokens) {
             $user->tokens()

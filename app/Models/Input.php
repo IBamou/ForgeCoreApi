@@ -11,20 +11,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Input extends Model
 {
-
     use SoftDeletes;
-    
+
     protected $fillable = [
-        'raw_input', 'user_id',
+        'raw_input', 'user_id', 'title'
     ];
 
     protected $casts = [
-        'raw_input' => 'array'
     ];
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function blueprints(): BelongsToMany
@@ -32,12 +30,10 @@ class Input extends Model
         return $this->belongsToMany(Blueprint::class, 'configurations');
     }
 
-
     public function configurations(): HasMany
     {
-        return $this->hasMany(Blueprint::class, 'input_id');
+        return $this->hasMany(Configuration::class, 'input_id');
     }
-
 
     public function posts(): HasManyThrough
     {

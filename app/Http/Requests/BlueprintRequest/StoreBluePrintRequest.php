@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\Blueprint;
+namespace App\Http\Requests\BlueprintRequest;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBluePrintRequest extends FormRequest
@@ -36,6 +35,7 @@ class StoreBluePrintRequest extends FormRequest
             'target_platform' => [
                 'required',
                 'string',
+                'in:x,linkedin',
             ],
 
             'max_length' => [

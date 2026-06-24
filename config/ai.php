@@ -101,6 +101,9 @@ return [
         'groq' => [
             'driver' => 'groq',
             'key' => env('GROQ_API_KEY'),
+            'url' => env('GROQ_BASE_URL'),
+            'model' => env('GROQ_MODEL'),
+            'timeout' => 120,
         ],
 
         'jina' => [

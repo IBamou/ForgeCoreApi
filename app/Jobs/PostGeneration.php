@@ -3,23 +3,34 @@
 namespace App\Jobs;
 
 use App\Models\Post;
+use App\Services\PostGeneration\PostGenerationService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class PostGeneration implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(public Post $post){}
+    public function __construct(public Post $post) {}
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-        // Implementation Of Post Generation
+        $generationService = app(PostGenerationService::class);
+
+        try {
+            $response = $generationService->generate($this->post);
+            $response = $generationService->validate($response);
+            if ($response) {
+                $generationService->storeResult($this->post, $response);
+            }
+        } catch (\Throwable $e) {
+            Log::error('PostGeneration failed', [
+                'post_id' => $this->post->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            $generationService->markAsFailed($this->post);
+        }
     }
 }

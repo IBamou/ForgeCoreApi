@@ -12,7 +12,7 @@ enum ProcessStatus: string
     // This method returns the human-readable label
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::Pending => 'Pending',
             self::Processing => 'Processing',
             self::Failed => 'Failed',
@@ -20,4 +20,3 @@ enum ProcessStatus: string
         };
     }
 }
-

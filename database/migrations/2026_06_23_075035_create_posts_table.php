@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->text('tone_compliance_justification')->nullable();
 
-            $table->string('process_status')->default('processing');
+            $table->string('process_status')->default('pending');
             $table->string('status')->default('in_review');
 
             $table->json('ai_payload')->nullable();

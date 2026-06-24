@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
+use App\Enums\ProcessStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'blueprint_id',
+        'user_id', 'configuration_id',
         'title', 'hook_proposal', 'body_points',
         'suggested_hashtags', 'technical_readability_score',
         'tone_compliance_justification', 'process_status',
@@ -29,12 +30,11 @@ class Post extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function configuration(): BelongsTo
     {
         return $this->belongsTo(Configuration::class);
     }
-
 }
