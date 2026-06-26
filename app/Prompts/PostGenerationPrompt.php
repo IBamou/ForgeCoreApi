@@ -31,7 +31,17 @@ Guidelines:
 - Optimize for readability and engagement on the target platform.
 - Assume the audience consists of software developers and technical professionals unless specified otherwise.
 
-The output format is defined by the provided schema and must be respected exactly.
+You MUST respond with valid JSON only. Do NOT include any text, explanation, or markdown formatting outside the JSON object.
+
+The JSON must have exactly this structure:
+{
+  "schema_version": 1,
+  "hook_proposal": "string - the opening hook for the post",
+  "body_points": ["array of strings - key points for the post body"],
+  "suggested_hashtags": ["array of strings - relevant hashtags"],
+  "technical_readability_score": "integer between 0 and 100",
+  "tone_compliance_justification": "string - brief explanation of how the output matches the requested tone"
+}
 PROMPT;
     }
 }

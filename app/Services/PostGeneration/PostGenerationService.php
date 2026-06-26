@@ -26,6 +26,7 @@ class PostGenerationService
                 'post_id' => $post->id,
                 'status' => $post->process_status->value,
             ]);
+
             return null;
         }
 
@@ -38,7 +39,7 @@ class PostGenerationService
             ->first();
 
         if (! $configuration) {
-            throw new \RuntimeException('Configuration not found for post ' . $post->id);
+            throw new \RuntimeException('Configuration not found for post '.$post->id);
         }
 
         $configurationData = json_encode(
@@ -64,6 +65,7 @@ class PostGenerationService
         }
 
         PostGenerationSchema::validate($data);
+
         return $data;
     }
 

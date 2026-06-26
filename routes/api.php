@@ -2,23 +2,43 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BluePrintController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\PostController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'healthy',
+        'timestamp' => now()->toIso8601String(),
+    ], 200);
+});
 
-Route::controller(AuthController::class)->group(function () {
+Route::controller(AuthController::class)->middleware(['guest', 'throttle:auth'])->group(function () {
     Route::post('/login', 'login')->name('login');
     Route::post('/register', 'register')->name('register');
-})->middleware('guest');
+    Route::post('/forgot-password', 'forgotPassword')->name('password.email');
+    Route::post('/reset-password', 'resetPassword')->name('password.reset');
+});
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['throttle:auth'])
+    ->name('verification.verify');
+
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::post('/email/verification-notification', [AuthController::class, 'sendEmailVerificationNotification'])
+        ->middleware('throttle:auth')
+        ->name('verification.send');
+
+    Route::controller(ProfileController::class)->prefix('/profile')->group(function () {
+        Route::get('/', 'show')->name('profile.show');
+        Route::put('/update', 'update')->name('profile.update');
+    });
 
     Route::controller(PostController::class)->prefix('/posts')->group(function () {
         Route::get('/', 'index')->name('posts.index');
@@ -30,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{post}/archive', 'archive')->name('posts.archive');
         Route::post('/{post}/restore', 'restore')->name('posts.restore')->withTrashed();
         Route::delete('/{post}/forceDelete', 'forceDelete')->name('posts.forceDelete')->withTrashed();
-        Route::post('/{post}/retry', 'retry')->name('posts.retry')->withTrashed();
+        Route::post('/{post}/retry', 'retry')->name('posts.retry');
     });
 
     Route::controller(BluePrintController::class)->prefix('/blueprints')->group(function () {
@@ -54,5 +74,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{input}/restore', 'restore')->name('inputs.restore')->withTrashed();
         Route::delete('/{input}/forceDelete', 'forceDelete')->name('inputs.forceDelete')->withTrashed();
     });
+
+    Route::controller(ConversationController::class)->prefix('/conversations')->group(function () {
+        Route::get('/', 'index')->name('conversations.index');
+        Route::get('/archived', 'archived')->name('conversations.archived');
+        Route::post('/store', 'store')->name('conversations.store');
+        Route::get('/{conversation}', 'show')->name('conversations.show');
+        Route::delete('/{conversation}/archive', 'archive')->name('conversations.archive');
+        Route::post('/{conversation}/restore', 'restore')->name('conversations.restore')->withTrashed();
+        Route::delete('/{conversation}/forceDelete', 'forceDelete')->name('conversations.forceDelete')->withTrashed();
+    });
+
+    Route::post('/conversations/{conversation}/send', [ConversationController::class, 'send'])
+        ->middleware('throttle:conversations')
+        ->name('conversations.send');
+
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 });

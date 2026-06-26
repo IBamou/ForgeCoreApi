@@ -4,13 +4,16 @@ namespace App\Models;
 
 use App\Enums\PostStatus;
 use App\Enums\ProcessStatus;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id', 'configuration_id',
@@ -36,5 +39,11 @@ class Post extends Model
     public function configuration(): BelongsTo
     {
         return $this->belongsTo(Configuration::class);
+    }
+
+    #[Scope]
+    protected function ownedBy(Builder $query): void
+    {
+        $query->where('user_id', auth()->id());
     }
 }

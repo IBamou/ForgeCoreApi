@@ -2,40 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InputRequest\StoreInputRequest;
+use App\Http\Requests\InputRequest\UpdateInputRequest;
 use App\Http\Resources\InputResource;
+use App\Http\Traits\FiltersAndSorts;
 use App\Models\Input;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class InputController extends Controller
 {
-    public function index()
+    use FiltersAndSorts;
+
+    public function index(Request $request): JsonResponse
     {
         $user = auth()->user();
 
-        $inputs = $user->inputs()->with('createdBy')->get();
+        $query = $user->inputs()->with('createdBy');
+
+        if ($request->filled('search')) {
+            $search = $request->str('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('raw_input', 'like', "%{$search}%");
+            });
+        }
+
+        $sortField = in_array($request->str('sort')->toString(), ['created_at', 'updated_at', 'title'])
+            ? $request->str('sort')->toString()
+            : 'created_at';
+
+        $sortDirection = $request->str('direction')->toString() === 'asc' ? 'asc' : 'desc';
+
+        $query->orderBy($sortField, $sortDirection);
+
+        $perPage = max(1, min(100, (int) $request->integer('per_page', 15)));
+
+        $inputs = $query->paginate($perPage);
 
         return response()->json([
             'inputs' => InputResource::collection($inputs),
+            'meta' => [
+                'current_page' => $inputs->currentPage(),
+                'last_page' => $inputs->lastPage(),
+                'per_page' => $inputs->perPage(),
+                'total' => $inputs->total(),
+            ],
         ], 200);
     }
 
-    public function archived()
+    public function archived(Request $request): JsonResponse
     {
         $user = auth()->user();
 
-        $inputs = $user->inputs()->onlyTrashed()->with('createdBy')->get();
+        $query = $user->inputs()->onlyTrashed()->with('createdBy');
 
-        return response()->json([
-            'inputs' => InputResource::collection($inputs),
-        ], 200);
+        $this->applySearch($query, $request, ['title', 'raw_input']);
+
+        $this->applySort($query, $request, ['created_at', 'updated_at', 'title']);
+
+        $inputs = $query->paginate($this->perPage($request));
+
+        return response()->json(
+            $this->paginatedResponse($inputs, 'inputs', InputResource::class),
+            200
+        );
     }
 
-    public function store(Request $request)
+    public function store(StoreInputRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string',
-            'raw_input' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
         $input = Input::create([
             ...$validated,
@@ -48,7 +84,7 @@ class InputController extends Controller
         ], 201);
     }
 
-    public function show(Input $input)
+    public function show(Input $input): JsonResponse
     {
         $this->authorize('view', $input);
 
@@ -59,14 +95,11 @@ class InputController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, Input $input)
+    public function update(UpdateInputRequest $request, Input $input): JsonResponse
     {
         $this->authorize('update', $input);
 
-        $validated = $request->validate([
-            'title' => 'sometimes|string',
-            'raw_input' => 'sometimes|string',
-        ]);
+        $validated = $request->validated();
 
         $input->update($validated);
 
@@ -76,7 +109,7 @@ class InputController extends Controller
         ], 200);
     }
 
-    public function archive(Input $input)
+    public function archive(Input $input): JsonResponse
     {
         $this->authorize('delete', $input);
 
@@ -87,7 +120,7 @@ class InputController extends Controller
         ], 200);
     }
 
-    public function restore(Input $input)
+    public function restore(Input $input): JsonResponse
     {
         $this->authorize('restore', $input);
 
@@ -99,7 +132,7 @@ class InputController extends Controller
         ], 200);
     }
 
-    public function forceDelete(Input $input)
+    public function forceDelete(Input $input): JsonResponse
     {
         $this->authorize('forceDelete', $input);
 
