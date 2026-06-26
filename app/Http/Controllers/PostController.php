@@ -6,6 +6,7 @@ use App\Enums\PostStatus;
 use App\Enums\ProcessStatus;
 use App\Http\Requests\PostRequest\StorePostRequest;
 use App\Http\Requests\PostRequest\UpdatePostRequest;
+use App\Http\Requests\PostRequest\UpdatePostStatusRequest;
 use App\Http\Resources\ConfigurationResource;
 use App\Http\Resources\PostResource;
 use App\Http\Traits\FiltersAndSorts;
@@ -15,7 +16,6 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -141,19 +141,9 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function updateStatus(Request $request, Post $post): JsonResponse
+    public function updateStatus(UpdatePostStatusRequest $request, Post $post): JsonResponse
     {
-        $this->authorize('updateStatus', $post);
-
-        $validated = $request->validate([
-            'status' => [
-                'required',
-                'string',
-                Rule::enum(PostStatus::class),
-            ],
-        ]);
-
-        $post->update($validated);
+        $post->update($request->validated());
 
         return response()->json([
             'message' => 'Post status updated successfully.',

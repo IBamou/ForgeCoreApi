@@ -28,14 +28,43 @@ class AiClient
             'timeout' => $this->timeout,
         ]);
 
-        $response = $agent->prompt(
-            prompt: $prompt,
-            provider: $this->provider,
-            model: $this->model,
-            timeout: $this->timeout,
-        );
+        try {
+            $response = $agent->prompt(
+                prompt: $prompt,
+                provider: $this->provider,
+                model: $this->model,
+                timeout: $this->timeout,
+            );
 
-        return (string) $response;
+            return (string) $response;
+        } catch (\Throwable $e) {
+            $message = $e->getMessage();
+            $isRateLimit = str_contains($message, '429')
+                || str_contains($message, 'rate limit')
+                || str_contains($message, 'too many requests')
+                || str_contains(strtolower($message), 'rate_limit');
+
+            Log::error('AiClient provider error', [
+                'provider' => $this->provider,
+                'model' => $this->model,
+                'is_rate_limit' => $isRateLimit,
+                'error' => $message,
+            ]);
+
+            if ($isRateLimit) {
+                throw new \RuntimeException(
+                    'AI service is currently rate limited. Please try again later.',
+                    429,
+                    $e,
+                );
+            }
+
+            throw new \RuntimeException(
+                'AI service request failed: '.$message,
+                (int) $e->getCode() ?: 500,
+                $e,
+            );
+        }
     }
 
     public static function parseResponse(string $response): ?array
