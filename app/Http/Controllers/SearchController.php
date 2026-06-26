@@ -9,8 +9,40 @@ use App\Http\Resources\PostResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Search
+ *
+ * Global search across posts, blueprints, inputs, and conversations.
+ */
 class SearchController extends Controller
 {
+    /**
+     * Global search
+     *
+     * Searches across the authenticated user's resources. Results can be filtered by type.
+     * Each result type returns up to `per_type` items (default 5, max 20).
+     *
+     * @authenticated
+     *
+     * @queryParam q string required Search query (min 2 characters). Example: AI
+     * @queryParam type string Filter by resource type (posts, blueprints, inputs, conversations). Example: posts
+     * @queryParam per_type int Items per result type (1-20). Example: 5
+     *
+     * @response 200 scenario="success" {
+     *   "query": "AI",
+     *   "type": null,
+     *   "results": {
+     *     "posts": {"total": 2, "items": [{"id": 1, "title": "AI Post", ...}]},
+     *     "blueprints": {"total": 1, "items": [{"id": 1, "name": "AI Blueprint", ...}]},
+     *     "inputs": {"total": 0, "items": []},
+     *     "conversations": {"total": 0, "items": []}
+     *   }
+     * }
+     * @response 422 scenario="validation error" {
+     *   "message": "Validation failed.",
+     *   "errors": {"q": ["The q field is required."]}
+     * }
+     */
     public function index(Request $request): JsonResponse
     {
         $request->validate([

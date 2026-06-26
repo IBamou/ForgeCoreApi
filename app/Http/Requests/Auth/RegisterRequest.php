@@ -26,4 +26,28 @@ class RegisterRequest extends FormRequest
             'email.unique' => 'This email is already registered.',
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'The user\'s full name.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'John Doe',
+            ],
+            'email' => [
+                'description' => 'The user\'s email address.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'john@example.com',
+            ],
+            'password' => [
+                'description' => 'The user\'s password.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'secret123',
+            ],
+        ];
+    }
 }

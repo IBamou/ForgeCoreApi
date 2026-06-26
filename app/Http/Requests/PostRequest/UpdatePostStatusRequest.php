@@ -27,4 +27,16 @@ class UpdatePostStatusRequest extends FormRequest
             'status.Illuminate\Validation\Rules\Enum' => 'The selected status is invalid.',
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'status' => [
+                'description' => 'The new post status. Must be a valid PostStatus enum value.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'draft',
+            ],
+        ];
+    }
 }

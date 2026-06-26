@@ -10,10 +10,35 @@ use App\Models\Blueprint;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Blueprints
+ *
+ * APIs for managing content blueprints that define tone, platform, and structure rules.
+ */
 class BluePrintController extends Controller
 {
     use FiltersAndSorts;
 
+    /**
+     * List blueprints
+     *
+     * Returns a paginated list of blueprints for the authenticated user.
+     *
+     * @authenticated
+     *
+     * @queryParam page int Page number. Example: 1
+     * @queryParam per_page int Items per page (1-100). Example: 15
+     * @queryParam search string Search by name, description, tone or target platform. Example: tech
+     * @queryParam is_active bool Filter by active status. Example: true
+     * @queryParam target_platform string Filter by platform (x, linkedin). Example: linkedin
+     * @queryParam sort string Sort by field (created_at, updated_at, name, tone). Example: created_at
+     * @queryParam direction string Sort direction (asc, desc). Example: desc
+     *
+     * @response 200 scenario="success" {
+     *   "blueprints": [{"id": 1, "name": "Tech Blog", ...}],
+     *   "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+     * }
+     */
     public function index(Request $request): JsonResponse
     {
         $user = auth()->user();
@@ -40,6 +65,24 @@ class BluePrintController extends Controller
         );
     }
 
+    /**
+     * List archived blueprints
+     *
+     * Returns a paginated list of soft-deleted blueprints.
+     *
+     * @authenticated
+     *
+     * @queryParam page int Page number. Example: 1
+     * @queryParam per_page int Items per page (1-100). Example: 15
+     * @queryParam search string Search by name or description. Example: tech
+     * @queryParam sort string Sort by field (created_at, updated_at, name). Example: created_at
+     * @queryParam direction string Sort direction (asc, desc). Example: desc
+     *
+     * @response 200 scenario="success" {
+     *   "blueprints": [{"id": 1, "name": "Tech Blog", ...}],
+     *   "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+     * }
+     */
     public function archived(Request $request): JsonResponse
     {
         $user = auth()->user();
@@ -58,6 +101,18 @@ class BluePrintController extends Controller
         );
     }
 
+    /**
+     * Create a blueprint
+     *
+     * Creates a new content blueprint.
+     *
+     * @authenticated
+     *
+     * @response 201 scenario="success" {
+     *   "message": "Blueprint created successfully.",
+     *   "blueprint": {"id": 1, "name": "Tech Blog", "tone": "technical", ...}
+     * }
+     */
     public function store(StoreBluePrintRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -74,6 +129,19 @@ class BluePrintController extends Controller
         ], 201);
     }
 
+    /**
+     * Show a blueprint
+     *
+     * Returns the details of a specific blueprint.
+     *
+     * @authenticated
+     *
+     * @urlParam blueprint int required The blueprint ID. Example: 1
+     *
+     * @response 200 scenario="success" {
+     *   "blueprint": {"id": 1, "name": "Tech Blog", "tone": "technical", ...}
+     * }
+     */
     public function show(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('view', $blueprint);
@@ -85,6 +153,17 @@ class BluePrintController extends Controller
         ], 200);
     }
 
+    /**
+     * Update a blueprint
+     *
+     * Updates the fields of a specific blueprint.
+     *
+     * @authenticated
+     *
+     * @urlParam blueprint int required The blueprint ID. Example: 1
+     *
+     * @response 200 {"message": "Blueprint updated successfully.", "blueprint": {"id": 1, ...}}
+     */
     public function update(UpdateBluePrintRequest $request, Blueprint $blueprint): JsonResponse
     {
         $this->authorize('update', $blueprint);
@@ -99,6 +178,17 @@ class BluePrintController extends Controller
         ], 200);
     }
 
+    /**
+     * Archive a blueprint
+     *
+     * Soft-deletes a specific blueprint.
+     *
+     * @authenticated
+     *
+     * @urlParam blueprint int required The blueprint ID. Example: 1
+     *
+     * @response 200 {"message": "Blueprint archived successfully."}
+     */
     public function archive(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('delete', $blueprint);
@@ -110,6 +200,17 @@ class BluePrintController extends Controller
         ], 200);
     }
 
+    /**
+     * Restore a blueprint
+     *
+     * Restores a soft-deleted blueprint.
+     *
+     * @authenticated
+     *
+     * @urlParam blueprint int required The blueprint ID. Example: 1
+     *
+     * @response 200 {"message": "Blueprint restored successfully.", "blueprint": {"id": 1, ...}}
+     */
     public function restore(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('restore', $blueprint);
@@ -122,6 +223,17 @@ class BluePrintController extends Controller
         ], 200);
     }
 
+    /**
+     * Permanently delete a blueprint
+     *
+     * Force-deletes a blueprint from the database.
+     *
+     * @authenticated
+     *
+     * @urlParam blueprint int required The blueprint ID. Example: 1
+     *
+     * @response 200 {"message": "Blueprint permanently deleted."}
+     */
     public function forceDelete(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('forceDelete', $blueprint);

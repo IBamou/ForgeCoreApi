@@ -1,0 +1,809 @@
+name: Blueprints
+description: |-
+
+  APIs for managing content blueprints that define tone, platform, and structure rules.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/blueprints
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List blueprints'
+      description: 'Returns a paginated list of blueprints for the authenticated user.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'Page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by name, description, tone or target platform.'
+        required: false
+        example: tech
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: 'Filter by active status.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      target_platform:
+        custom: []
+        name: target_platform
+        description: 'Filter by platform (x, linkedin).'
+        required: false
+        example: linkedin
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort by field (created_at, updated_at, name, tone).'
+        required: false
+        example: created_at
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      direction:
+        custom: []
+        name: direction
+        description: 'Sort direction (asc, desc).'
+        required: false
+        example: desc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      search: tech
+      is_active: true
+      target_platform: linkedin
+      sort: created_at
+      direction: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "blueprints": [{"id": 1, "name": "Tech Blog", ...}],
+            "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/blueprints/archived
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List archived blueprints'
+      description: 'Returns a paginated list of soft-deleted blueprints.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'Page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by name or description.'
+        required: false
+        example: tech
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort by field (created_at, updated_at, name).'
+        required: false
+        example: created_at
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      direction:
+        custom: []
+        name: direction
+        description: 'Sort direction (asc, desc).'
+        required: false
+        example: desc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      search: tech
+      sort: created_at
+      direction: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "blueprints": [{"id": 1, "name": "Tech Blog", ...}],
+            "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/blueprints/store
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a blueprint'
+      description: 'Creates a new content blueprint.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'A name for the blueprint. Must not be greater than 255 characters.'
+        required: true
+        example: 'Tech Thought Leadership'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: 'An optional description of the blueprint.'
+        required: false
+        example: 'Blueprint for technical thought leadership posts on LinkedIn.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      tone:
+        custom: []
+        name: tone
+        description: 'The writing tone.'
+        required: true
+        example: technical
+        type: string
+        enumValues:
+          - professional
+          - casual
+          - technical
+          - educational
+          - persuasive
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      target_platform:
+        custom: []
+        name: target_platform
+        description: 'The target social media platform.'
+        required: true
+        example: linkedin
+        type: string
+        enumValues:
+          - x
+          - linkedin
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      max_length:
+        custom: []
+        name: max_length
+        description: 'Maximum post length in characters. Must be at least 50. Must not be greater than 5000.'
+        required: true
+        example: 1500
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      structure_rules:
+        custom: []
+        name: structure_rules
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example:
+          - b
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      style_rules:
+        custom: []
+        name: style_rules
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example:
+          - 'n'
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      hashtag_strategy:
+        custom: []
+        name: hashtag_strategy
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example:
+          - g
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Tech Thought Leadership'
+      description: 'Blueprint for technical thought leadership posts on LinkedIn.'
+      tone: technical
+      target_platform: linkedin
+      max_length: 1500
+      structure_rules:
+        - b
+      style_rules:
+        - 'n'
+      hashtag_strategy:
+        - g
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "message": "Blueprint created successfully.",
+            "blueprint": {"id": 1, "name": "Tech Blog", "tone": "technical", ...}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/blueprints/{id}'
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show a blueprint'
+      description: 'Returns the details of a specific blueprint.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the blueprint.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      blueprint:
+        custom: []
+        name: blueprint
+        description: 'The blueprint ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      blueprint: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "blueprint": {"id": 1, "name": "Tech Blog", "tone": "technical", ...}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/blueprints/{id}/update'
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a blueprint'
+      description: 'Updates the fields of a specific blueprint.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the blueprint.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      blueprint:
+        custom: []
+        name: blueprint
+        description: 'The blueprint ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      blueprint: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'The blueprint name. Must not be greater than 255 characters.'
+        required: false
+        example: 'Updated Tech Blueprint'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: 'The blueprint description.'
+        required: false
+        example: 'Updated description for the blueprint.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      tone:
+        custom: []
+        name: tone
+        description: 'The writing tone. Must not be greater than 50 characters.'
+        required: false
+        example: professional
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      target_platform:
+        custom: []
+        name: target_platform
+        description: 'The target platform.'
+        required: false
+        example: x
+        type: string
+        enumValues:
+          - x
+          - linkedin
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      max_length:
+        custom: []
+        name: max_length
+        description: 'Maximum post length. Must be at least 50. Must not be greater than 5000.'
+        required: false
+        example: 2000
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      structure_rules:
+        custom: []
+        name: structure_rules
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example:
+          - b
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      style_rules:
+        custom: []
+        name: style_rules
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example:
+          - 'n'
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      hashtag_strategy:
+        custom: []
+        name: hashtag_strategy
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example:
+          - g
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Updated Tech Blueprint'
+      description: 'Updated description for the blueprint.'
+      tone: professional
+      target_platform: x
+      max_length: 2000
+      structure_rules:
+        - b
+      style_rules:
+        - 'n'
+      hashtag_strategy:
+        - g
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Blueprint updated successfully.", "blueprint": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/blueprints/{blueprint_id}/archive'
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Archive a blueprint'
+      description: 'Soft-deletes a specific blueprint.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      blueprint_id:
+        custom: []
+        name: blueprint_id
+        description: 'The ID of the blueprint.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      blueprint:
+        custom: []
+        name: blueprint
+        description: 'The blueprint ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      blueprint_id: 1
+      blueprint: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Blueprint archived successfully."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/blueprints/{blueprint_id}/restore'
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Restore a blueprint'
+      description: 'Restores a soft-deleted blueprint.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      blueprint_id:
+        custom: []
+        name: blueprint_id
+        description: 'The ID of the blueprint.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      blueprint:
+        custom: []
+        name: blueprint
+        description: 'The blueprint ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      blueprint_id: 1
+      blueprint: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Blueprint restored successfully.", "blueprint": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/blueprints/{blueprint_id}/forceDelete'
+    metadata:
+      custom: []
+      groupName: Blueprints
+      groupDescription: |-
+
+        APIs for managing content blueprints that define tone, platform, and structure rules.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Permanently delete a blueprint'
+      description: 'Force-deletes a blueprint from the database.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      blueprint_id:
+        custom: []
+        name: blueprint_id
+        description: 'The ID of the blueprint.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      blueprint:
+        custom: []
+        name: blueprint
+        description: 'The blueprint ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      blueprint_id: 1
+      blueprint: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Blueprint permanently deleted."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

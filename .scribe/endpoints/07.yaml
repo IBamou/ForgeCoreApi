@@ -1,0 +1,130 @@
+name: Search
+description: |-
+
+  Global search across posts, blueprints, inputs, and conversations.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/search
+    metadata:
+      custom: []
+      groupName: Search
+      groupDescription: |-
+
+        Global search across posts, blueprints, inputs, and conversations.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Global search'
+      description: |-
+        Searches across the authenticated user's resources. Results can be filtered by type.
+        Each result type returns up to `per_type` items (default 5, max 20).
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      q:
+        custom: []
+        name: q
+        description: 'Search query (min 2 characters).'
+        required: true
+        example: AI
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      type:
+        custom: []
+        name: type
+        description: 'Filter by resource type (posts, blueprints, inputs, conversations).'
+        required: false
+        example: posts
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_type:
+        custom: []
+        name: per_type
+        description: 'Items per result type (1-20).'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      q: AI
+      type: posts
+      per_type: 5
+    bodyParameters:
+      q:
+        custom: []
+        name: q
+        description: 'Must be at least 2 characters. Must not be greater than 100 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      type:
+        custom: []
+        name: type
+        description: ''
+        required: false
+        example: conversations
+        type: string
+        enumValues:
+          - posts
+          - blueprints
+          - inputs
+          - conversations
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      q: b
+      type: conversations
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "query": "AI",
+            "type": null,
+            "results": {
+              "posts": {"total": 2, "items": [{"id": 1, "title": "AI Post", ...}]},
+              "blueprints": {"total": 1, "items": [{"id": 1, "name": "AI Blueprint", ...}]},
+              "inputs": {"total": 0, "items": []},
+              "conversations": {"total": 0, "items": []}
+            }
+          }
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Validation failed.",
+            "errors": {"q": ["The q field is required."]}
+          }
+        headers: []
+        description: 'validation error'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

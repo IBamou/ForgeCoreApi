@@ -6,19 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBluePrintRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -49,6 +41,60 @@ class UpdateBluePrintRequest extends FormRequest
 
             'hashtag_strategy' => ['sometimes', 'nullable', 'array'],
             'hashtag_strategy.*' => ['string', 'max:100'],
+        ];
+    }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'The blueprint name.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'Updated Tech Blueprint',
+            ],
+            'description' => [
+                'description' => 'The blueprint description.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'Updated description for the blueprint.',
+            ],
+            'tone' => [
+                'description' => 'The writing tone.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'professional',
+            ],
+            'target_platform' => [
+                'description' => 'The target platform.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'x',
+            ],
+            'max_length' => [
+                'description' => 'Maximum post length.',
+                'required' => false,
+                'type' => 'integer',
+                'example' => 2000,
+            ],
+            'structure_rules' => [
+                'description' => 'Array of structural rules.',
+                'required' => false,
+                'type' => 'string[]',
+                'example' => ['Start with a hook', 'Include data or stats'],
+            ],
+            'style_rules' => [
+                'description' => 'Array of style guidelines.',
+                'required' => false,
+                'type' => 'string[]',
+                'example' => ['Use active voice', 'Keep paragraphs short'],
+            ],
+            'hashtag_strategy' => [
+                'description' => 'Array of hashtag strategy instructions.',
+                'required' => false,
+                'type' => 'string[]',
+                'example' => ['Use 3-5 hashtags', 'Include branded hashtag'],
+            ],
         ];
     }
 }

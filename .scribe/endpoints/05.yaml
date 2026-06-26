@@ -1,0 +1,620 @@
+name: Inputs
+description: |-
+
+  APIs for managing raw content inputs used for post generation.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/inputs
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List inputs'
+      description: 'Returns a paginated list of inputs for the authenticated user.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'Page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by title or raw input content.'
+        required: false
+        example: article
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort by field (created_at, updated_at, title).'
+        required: false
+        example: created_at
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      direction:
+        custom: []
+        name: direction
+        description: 'Sort direction (asc, desc).'
+        required: false
+        example: desc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      search: article
+      sort: created_at
+      direction: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "inputs": [{"id": 1, "title": "My Input", "raw_input": "Content...", ...}],
+            "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/inputs/archived
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List archived inputs'
+      description: 'Returns a paginated list of soft-deleted inputs.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'Page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by title or raw input.'
+        required: false
+        example: article
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort by field (created_at, updated_at, title).'
+        required: false
+        example: created_at
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      direction:
+        custom: []
+        name: direction
+        description: 'Sort direction (asc, desc).'
+        required: false
+        example: desc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      search: article
+      sort: created_at
+      direction: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "inputs": [{"id": 1, "title": "My Input", ...}],
+            "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/inputs/store
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create an input'
+      description: 'Creates a new raw content input.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'A descriptive title for the input.'
+        required: true
+        example: 'Article about Machine Learning'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      raw_input:
+        custom: []
+        name: raw_input
+        description: 'The raw content or source material.'
+        required: true
+        example: 'Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience...'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      title: 'Article about Machine Learning'
+      raw_input: 'Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience...'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "message": "Input created successfully.",
+            "input": {"id": 1, "title": "My Input", "raw_input": "Content...", ...}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/inputs/{id}'
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show an input'
+      description: 'Returns the details of a specific input.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the input.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      input:
+        custom: []
+        name: input
+        description: 'The input ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      input: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "input": {"id": 1, "title": "My Input", "raw_input": "Content...", ...}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/inputs/{id}/update'
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update an input'
+      description: 'Updates the fields of a specific input.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the input.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      input:
+        custom: []
+        name: input
+        description: 'The input ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      input: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'The input title.'
+        required: false
+        example: 'Updated ML Article'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      raw_input:
+        custom: []
+        name: raw_input
+        description: 'The raw content or source material.'
+        required: false
+        example: 'Updated content about machine learning techniques...'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      title: 'Updated ML Article'
+      raw_input: 'Updated content about machine learning techniques...'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Input updated successfully.", "input": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/inputs/{input_id}/archive'
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Archive an input'
+      description: 'Soft-deletes a specific input.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      input_id:
+        custom: []
+        name: input_id
+        description: 'The ID of the input.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      input:
+        custom: []
+        name: input
+        description: 'The input ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      input_id: 1
+      input: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Input archived successfully."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/inputs/{input_id}/restore'
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Restore an input'
+      description: 'Restores a soft-deleted input.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      input_id:
+        custom: []
+        name: input_id
+        description: 'The ID of the input.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      input:
+        custom: []
+        name: input
+        description: 'The input ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      input_id: 1
+      input: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Input restored successfully.", "input": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/inputs/{input_id}/forceDelete'
+    metadata:
+      custom: []
+      groupName: Inputs
+      groupDescription: |-
+
+        APIs for managing raw content inputs used for post generation.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Permanently delete an input'
+      description: 'Force-deletes an input from the database.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      input_id:
+        custom: []
+        name: input_id
+        description: 'The ID of the input.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      input:
+        custom: []
+        name: input
+        description: 'The input ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      input_id: 1
+      input: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Input permanently deleted."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

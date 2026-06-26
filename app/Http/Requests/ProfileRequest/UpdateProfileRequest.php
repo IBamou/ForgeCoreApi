@@ -30,4 +30,40 @@ class UpdateProfileRequest extends FormRequest
             'password.min' => 'Password must be at least 8 characters.',
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'The user\'s full name.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'John Updated',
+            ],
+            'email' => [
+                'description' => 'The user\'s email address.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'john.updated@example.com',
+            ],
+            'current_password' => [
+                'description' => 'Required when changing the password. Must match the current password.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'current-secret',
+            ],
+            'password' => [
+                'description' => 'The new password (min 8 characters).',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'new-secret-123',
+            ],
+            'password_confirmation' => [
+                'description' => 'Must match the new password.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'new-secret-123',
+            ],
+        ];
+    }
 }

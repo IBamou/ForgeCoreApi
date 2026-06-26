@@ -16,10 +16,34 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Ai\Messages\Message as AiMessage;
 
+/**
+ * @group Conversations
+ *
+ * APIs for managing AI chat conversations and sending messages.
+ */
 class ConversationController extends Controller
 {
     use FiltersAndSorts;
 
+    /**
+     * List conversations
+     *
+     * Returns a paginated list of conversations for the authenticated user.
+     *
+     * @authenticated
+     *
+     * @queryParam page int Page number. Example: 1
+     * @queryParam per_page int Items per page (1-100). Example: 15
+     * @queryParam search string Search by title. Example: My Chat
+     * @queryParam post_id int Filter by associated post ID. Example: 1
+     * @queryParam sort string Sort by field (created_at, updated_at, title). Example: created_at
+     * @queryParam direction string Sort direction (asc, desc). Example: desc
+     *
+     * @response 200 scenario="success" {
+     *   "conversations": [{"id": "uuid", "title": "My Chat", ...}],
+     *   "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+     * }
+     */
     public function index(Request $request): JsonResponse
     {
         $user = auth()->user();
@@ -42,6 +66,24 @@ class ConversationController extends Controller
         );
     }
 
+    /**
+     * List archived conversations
+     *
+     * Returns a paginated list of soft-deleted conversations.
+     *
+     * @authenticated
+     *
+     * @queryParam page int Page number. Example: 1
+     * @queryParam per_page int Items per page (1-100). Example: 15
+     * @queryParam search string Search by title. Example: My Chat
+     * @queryParam sort string Sort by field (created_at, updated_at, title). Example: created_at
+     * @queryParam direction string Sort direction (asc, desc). Example: desc
+     *
+     * @response 200 scenario="success" {
+     *   "conversations": [{"id": "uuid", "title": "My Chat", ...}],
+     *   "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+     * }
+     */
     public function archived(Request $request): JsonResponse
     {
         $user = auth()->user();
@@ -60,6 +102,18 @@ class ConversationController extends Controller
         );
     }
 
+    /**
+     * Create a conversation
+     *
+     * Creates a new conversation for AI chat.
+     *
+     * @authenticated
+     *
+     * @response 201 scenario="success" {
+     *   "message": "Conversation created successfully.",
+     *   "conversation": {"id": "uuid", "title": "My Chat", ...}
+     * }
+     */
     public function store(StoreConversationRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -75,6 +129,19 @@ class ConversationController extends Controller
         ], 201);
     }
 
+    /**
+     * Show a conversation
+     *
+     * Returns the details and messages of a specific conversation.
+     *
+     * @authenticated
+     *
+     * @urlParam conversation string required The conversation UUID. Example: 550e8400-e29b-41d4-a716-446655440000
+     *
+     * @response 200 scenario="success" {
+     *   "conversation": {"id": "uuid", "title": "My Chat", "messages": [...], ...}
+     * }
+     */
     public function show(Conversation $conversation): JsonResponse
     {
         $this->authorize('view', $conversation);
@@ -86,6 +153,22 @@ class ConversationController extends Controller
         ], 200);
     }
 
+    /**
+     * Send a message
+     *
+     * Sends a message in a conversation and gets an AI-generated reply.
+     *
+     * @authenticated
+     *
+     * @urlParam conversation string required The conversation UUID. Example: 550e8400-e29b-41d4-a716-446655440000
+     *
+     * @response 201 scenario="success" {
+     *   "message": "Message sent successfully.",
+     *   "user_message": {"id": "uuid", "role": "user", "content": "Hello", ...},
+     *   "assistant_message": {"id": "uuid", "role": "assistant", "content": "Hi! How can I help?", ...}
+     * }
+     * @response 429 scenario="ai rate limited" {"message": "AI service is currently rate limited. Please try again later."}
+     */
     public function send(SendConversationRequest $request, Conversation $conversation): JsonResponse
     {
         $this->authorize('sendMessage', $conversation);
@@ -159,6 +242,17 @@ class ConversationController extends Controller
         ], 201);
     }
 
+    /**
+     * Archive a conversation
+     *
+     * Soft-deletes a specific conversation.
+     *
+     * @authenticated
+     *
+     * @urlParam conversation string required The conversation UUID. Example: 550e8400-e29b-41d4-a716-446655440000
+     *
+     * @response 200 {"message": "Conversation archived successfully."}
+     */
     public function archive(Conversation $conversation): JsonResponse
     {
         $this->authorize('delete', $conversation);
@@ -170,6 +264,17 @@ class ConversationController extends Controller
         ], 200);
     }
 
+    /**
+     * Restore a conversation
+     *
+     * Restores a soft-deleted conversation.
+     *
+     * @authenticated
+     *
+     * @urlParam conversation string required The conversation UUID. Example: 550e8400-e29b-41d4-a716-446655440000
+     *
+     * @response 200 {"message": "Conversation restored successfully.", "conversation": {"id": "uuid", ...}}
+     */
     public function restore(Conversation $conversation): JsonResponse
     {
         $this->authorize('restore', $conversation);
@@ -182,6 +287,17 @@ class ConversationController extends Controller
         ], 200);
     }
 
+    /**
+     * Permanently delete a conversation
+     *
+     * Force-deletes a conversation from the database.
+     *
+     * @authenticated
+     *
+     * @urlParam conversation string required The conversation UUID. Example: 550e8400-e29b-41d4-a716-446655440000
+     *
+     * @response 200 {"message": "Conversation permanently deleted."}
+     */
     public function forceDelete(Conversation $conversation): JsonResponse
     {
         $this->authorize('forceDelete', $conversation);

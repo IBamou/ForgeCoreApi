@@ -1,0 +1,47 @@
+name: Profile
+description: |-
+
+  APIs for viewing and updating the authenticated user's profile.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/profile
+    metadata:
+      custom: []
+      groupName: Profile
+      groupDescription: |-
+
+        APIs for viewing and updating the authenticated user's profile.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show profile'
+      description: "Returns the authenticated user's profile information."
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "user": {"id": 1, "name": "John Doe", "email": "john@example.com", "created_at": "2026-01-01T00:00:00.000000Z"}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

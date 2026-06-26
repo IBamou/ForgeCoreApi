@@ -17,4 +17,16 @@ class SendConversationRequest extends FormRequest
             'content' => ['required', 'string'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'content' => [
+                'description' => 'The message content to send to the AI assistant.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'Can you help me improve the hook of my post?',
+            ],
+        ];
+    }
 }

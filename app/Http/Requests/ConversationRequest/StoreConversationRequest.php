@@ -18,4 +18,22 @@ class StoreConversationRequest extends FormRequest
             'post_id' => ['sometimes', 'integer', 'exists:posts,id'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'title' => [
+                'description' => 'A title for the conversation.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'Drafting my AI post',
+            ],
+            'post_id' => [
+                'description' => 'The ID of an associated post (optional).',
+                'required' => false,
+                'type' => 'integer',
+                'example' => 1,
+            ],
+        ];
+    }
 }
