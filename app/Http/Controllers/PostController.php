@@ -8,66 +8,99 @@ use App\Http\Requests\PostRequest\StorePostRequest;
 use App\Http\Requests\PostRequest\UpdatePostRequest;
 use App\Http\Resources\ConfigurationResource;
 use App\Http\Resources\PostResource;
+use App\Http\Traits\FiltersAndSorts;
 use App\Jobs\PostGeneration;
 use App\Models\Configuration;
 use App\Models\Post;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
-    public function index()
+    use FiltersAndSorts;
+
+    private array $postSearchable = ['title', 'hook_proposal', 'body_points'];
+
+    public function index(Request $request): JsonResponse
     {
         $user = auth()->user();
 
-        $posts = $user->posts()->with(['configuration', 'createdBy'])->get();
+        $query = $user->posts()->with(['configuration', 'createdBy']);
 
-        $data = ['posts' => PostResource::collection($posts)];
+        $this->applySearch($query, $request, $this->postSearchable);
 
-        return response()->json($data, 200);
+        if ($request->filled('status')) {
+            $query->where('status', $request->str('status'));
+        }
+
+        if ($request->filled('process_status')) {
+            $query->where('process_status', $request->str('process_status'));
+        }
+
+        $this->applySort($query, $request, ['created_at', 'updated_at', 'title', 'status']);
+
+        $posts = $query->paginate($this->perPage($request));
+
+        return response()->json(
+            $this->paginatedResponse($posts, 'posts', PostResource::class),
+            200
+        );
     }
 
-    public function archived()
+    public function archived(Request $request): JsonResponse
     {
         $user = auth()->user();
 
-        $posts = $user->posts()->onlyTrashed()->with(['configuration', 'createdBy'])->get();
+        $query = $user->posts()->onlyTrashed()->with(['configuration', 'createdBy']);
 
-        $data = ['posts' => PostResource::collection($posts)];
+        $this->applySearch($query, $request, $this->postSearchable);
 
-        return response()->json($data, 200);
+        $this->applySort($query, $request, ['created_at', 'updated_at', 'title']);
+
+        $posts = $query->paginate($this->perPage($request));
+
+        return response()->json(
+            $this->paginatedResponse($posts, 'posts', PostResource::class),
+            200
+        );
     }
 
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
-        $configuration = Configuration::firstOrCreate([
-            'blueprint_id' => $validated['blueprint_id'],
-            'input_id' => $validated['input_id'],
-            'user_id' => auth()->id(),
-        ]);
+        $post = DB::transaction(function () use ($validated) {
+            $configuration = Configuration::firstOrCreate([
+                'blueprint_id' => $validated['blueprint_id'],
+                'input_id' => $validated['input_id'],
+                'user_id' => auth()->id(),
+            ]);
 
-        $post = Post::create([
-            'user_id' => auth()->id(),
-            'title' => $validated['title'],
-            'configuration_id' => $configuration->id,
-            'process_status' => ProcessStatus::Pending,
-            'status' => PostStatus::InReview,
-        ]);
+            $post = Post::create([
+                'user_id' => auth()->id(),
+                'title' => $validated['title'],
+                'configuration_id' => $configuration->id,
+                'process_status' => ProcessStatus::Pending,
+                'status' => PostStatus::InReview,
+            ]);
 
-        $configuration->load(['blueprint', 'input']);
+            $configuration->load(['blueprint', 'input']);
 
-        PostGeneration::dispatch($post);
+            PostGeneration::dispatch($post);
+
+            return $post;
+        });
 
         return response()->json([
             'message' => 'Post created successfully.',
-            'configuration' => ConfigurationResource::make($configuration),
+            'configuration' => ConfigurationResource::make($post->configuration),
             'post' => PostResource::make($post),
         ], 201);
     }
 
-    public function show(Post $post)
+    public function show(Post $post): JsonResponse
     {
         $this->authorize('view', $post);
 
@@ -78,7 +111,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function retry(Post $post)
+    public function retry(Post $post): JsonResponse
     {
         $this->authorize('retry', $post);
 
@@ -94,7 +127,7 @@ class PostController extends Controller
         ], 201);
     }
 
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post): JsonResponse
     {
         $this->authorize('update', $post);
 
@@ -108,13 +141,13 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function updateStatus(Request $request, Post $post)
+    public function updateStatus(Request $request, Post $post): JsonResponse
     {
         $this->authorize('updateStatus', $post);
 
         $validated = $request->validate([
             'status' => [
-                'sometimes',
+                'required',
                 'string',
                 Rule::enum(PostStatus::class),
             ],
@@ -128,7 +161,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function archive(Post $post)
+    public function archive(Post $post): JsonResponse
     {
         $this->authorize('delete', $post);
 
@@ -139,7 +172,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function restore(Post $post)
+    public function restore(Post $post): JsonResponse
     {
         $this->authorize('restore', $post);
 
@@ -151,7 +184,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function forceDelete(Post $post)
+    public function forceDelete(Post $post): JsonResponse
     {
         $this->authorize('forceDelete', $post);
 

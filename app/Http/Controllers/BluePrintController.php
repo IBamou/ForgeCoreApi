@@ -5,39 +5,67 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BlueprintRequest\StoreBluePrintRequest;
 use App\Http\Requests\BlueprintRequest\UpdateBluePrintRequest;
 use App\Http\Resources\BluePrintResource;
+use App\Http\Traits\FiltersAndSorts;
 use App\Models\Blueprint;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BluePrintController extends Controller
 {
-    public function index()
+    use FiltersAndSorts;
+
+    public function index(Request $request): JsonResponse
     {
         $user = auth()->user();
 
-        $blueprints = $user->bluePrints()->with('createdBy')->get();
+        $query = $user->bluePrints()->with('createdBy');
 
-        return response()->json([
-            'blueprints' => BluePrintResource::collection($blueprints),
-        ], 200);
+        $this->applySearch($query, $request, ['name', 'description', 'tone', 'target_platform']);
+
+        if ($request->has('is_active')) {
+            $query->where('is_active', $request->boolean('is_active'));
+        }
+
+        if ($request->filled('target_platform')) {
+            $query->where('target_platform', $request->str('target_platform'));
+        }
+
+        $this->applySort($query, $request, ['created_at', 'updated_at', 'name', 'tone']);
+
+        $blueprints = $query->paginate($this->perPage($request));
+
+        return response()->json(
+            $this->paginatedResponse($blueprints, 'blueprints', BluePrintResource::class),
+            200
+        );
     }
 
-    public function archived()
+    public function archived(Request $request): JsonResponse
     {
         $user = auth()->user();
 
-        $blueprints = $user->bluePrints()->onlyTrashed()->with('createdBy')->get();
+        $query = $user->bluePrints()->onlyTrashed()->with('createdBy');
 
-        return response()->json([
-            'blueprints' => BluePrintResource::collection($blueprints),
-        ], 200);
+        $this->applySearch($query, $request, ['name', 'description']);
+
+        $this->applySort($query, $request, ['created_at', 'updated_at', 'name']);
+
+        $blueprints = $query->paginate($this->perPage($request));
+
+        return response()->json(
+            $this->paginatedResponse($blueprints, 'blueprints', BluePrintResource::class),
+            200
+        );
     }
 
-    public function store(StoreBluePrintRequest $request)
+    public function store(StoreBluePrintRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
         $blueprint = Blueprint::create([
             ...$validated,
             'user_id' => auth()->id(),
+            'is_active' => true,
         ]);
 
         return response()->json([
@@ -46,7 +74,7 @@ class BluePrintController extends Controller
         ], 201);
     }
 
-    public function show(Blueprint $blueprint)
+    public function show(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('view', $blueprint);
 
@@ -57,7 +85,7 @@ class BluePrintController extends Controller
         ], 200);
     }
 
-    public function update(UpdateBluePrintRequest $request, Blueprint $blueprint)
+    public function update(UpdateBluePrintRequest $request, Blueprint $blueprint): JsonResponse
     {
         $this->authorize('update', $blueprint);
 
@@ -71,7 +99,7 @@ class BluePrintController extends Controller
         ], 200);
     }
 
-    public function archive(Blueprint $blueprint)
+    public function archive(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('delete', $blueprint);
 
@@ -82,7 +110,7 @@ class BluePrintController extends Controller
         ], 200);
     }
 
-    public function restore(Blueprint $blueprint)
+    public function restore(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('restore', $blueprint);
 
@@ -94,7 +122,7 @@ class BluePrintController extends Controller
         ], 200);
     }
 
-    public function forceDelete(Blueprint $blueprint)
+    public function forceDelete(Blueprint $blueprint): JsonResponse
     {
         $this->authorize('forceDelete', $blueprint);
 

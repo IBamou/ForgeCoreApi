@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Laravel\Ai\Contracts\Agent;
 
 class AiClient
@@ -21,6 +22,12 @@ class AiClient
 
     public function prompt(Agent $agent, string $prompt): string
     {
+        Log::debug('AiClient prompting', [
+            'provider' => $this->provider,
+            'model' => $this->model,
+            'timeout' => $this->timeout,
+        ]);
+
         $response = $agent->prompt(
             prompt: $prompt,
             provider: $this->provider,
@@ -41,6 +48,12 @@ class AiClient
             } elseif (preg_match('/```\s*(.*?)\s*```/s', $response, $m)) {
                 $data = json_decode($m[1], true);
             }
+        }
+
+        if (! is_array($data)) {
+            Log::error('AiClient failed to parse response', [
+                'raw_response' => mb_substr($response, 0, 2000),
+            ]);
         }
 
         return is_array($data) ? $data : null;
