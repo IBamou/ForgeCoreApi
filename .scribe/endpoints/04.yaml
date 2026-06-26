@@ -1,7 +1,8 @@
 name: Blueprints
 description: |-
 
-  APIs for managing content blueprints that define tone, platform, and structure rules.
+  Define reusable content templates that control tone, target platform, length, and style of generated posts.
+  Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
 endpoints:
   -
     custom: []
@@ -13,7 +14,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'List blueprints'
@@ -21,6 +23,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -126,7 +129,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -140,7 +146,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'List archived blueprints'
@@ -148,6 +155,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -229,7 +237,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -243,7 +254,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Create a blueprint'
@@ -251,6 +263,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -381,7 +394,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -395,7 +411,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Show a blueprint'
@@ -403,6 +420,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -447,7 +465,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -461,7 +482,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Update a blueprint'
@@ -469,6 +491,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -614,7 +637,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -628,7 +654,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Archive a blueprint'
@@ -636,6 +663,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -677,7 +705,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -691,7 +722,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Restore a blueprint'
@@ -699,6 +731,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -740,7 +773,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -754,7 +790,8 @@ endpoints:
       groupName: Blueprints
       groupDescription: |-
 
-        APIs for managing content blueprints that define tone, platform, and structure rules.
+        Define reusable content templates that control tone, target platform, length, and style of generated posts.
+        Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Permanently delete a blueprint'
@@ -762,6 +799,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -803,7 +841,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

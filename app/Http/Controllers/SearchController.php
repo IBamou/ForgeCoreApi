@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 /**
  * @group Search
  *
- * Global search across posts, blueprints, inputs, and conversations.
+ * Search across all your resources — posts, blueprints, inputs, and conversations — from a single endpoint.
+ * Optionally filter by resource type to narrow results.
  */
 class SearchController extends Controller
 {
@@ -24,7 +25,7 @@ class SearchController extends Controller
      *
      * @authenticated
      *
-     * @queryParam q string required Search query (min 2 characters). Example: AI
+     * @queryParam q string Search query. Omitting returns all results. Example: AI
      * @queryParam type string Filter by resource type (posts, blueprints, inputs, conversations). Example: posts
      * @queryParam per_type int Items per result type (1-20). Example: 5
      *
@@ -46,12 +47,12 @@ class SearchController extends Controller
     public function index(Request $request): JsonResponse
     {
         $request->validate([
-            'q' => ['required', 'string', 'min:2', 'max:100'],
+            'q' => ['sometimes', 'nullable', 'string', 'max:100'],
             'type' => ['sometimes', 'string', 'in:posts,blueprints,inputs,conversations'],
         ]);
 
-        $q = $request->str('q');
-        $type = $request->str('type');
+        $q = $request->filled('q') ? $request->str('q') : null;
+        $type = $request->filled('type') ? $request->str('type') : null;
         $user = auth()->user();
         $perType = max(1, min(20, (int) $request->integer('per_type', 5)));
 
@@ -59,11 +60,11 @@ class SearchController extends Controller
 
         if (! $type || $type === 'posts') {
             $posts = $user->posts()
-                ->where(function ($query) use ($q) {
+                ->when($q, fn ($query) => $query->where(function ($query) use ($q) {
                     $query->where('title', 'like', "%{$q}%")
                         ->orWhere('hook_proposal', 'like', "%{$q}%")
                         ->orWhere('body_points', 'like', "%{$q}%");
-                })
+                }))
                 ->with(['configuration.blueprint', 'configuration.input', 'createdBy'])
                 ->orderByDesc('created_at')
                 ->take($perType)
@@ -77,11 +78,11 @@ class SearchController extends Controller
 
         if (! $type || $type === 'blueprints') {
             $blueprints = $user->bluePrints()
-                ->where(function ($query) use ($q) {
+                ->when($q, fn ($query) => $query->where(function ($query) use ($q) {
                     $query->where('name', 'like', "%{$q}%")
                         ->orWhere('description', 'like', "%{$q}%")
                         ->orWhere('tone', 'like', "%{$q}%");
-                })
+                }))
                 ->with('createdBy')
                 ->orderByDesc('created_at')
                 ->take($perType)
@@ -95,10 +96,10 @@ class SearchController extends Controller
 
         if (! $type || $type === 'inputs') {
             $inputs = $user->inputs()
-                ->where(function ($query) use ($q) {
+                ->when($q, fn ($query) => $query->where(function ($query) use ($q) {
                     $query->where('title', 'like', "%{$q}%")
                         ->orWhere('raw_input', 'like', "%{$q}%");
-                })
+                }))
                 ->with('createdBy')
                 ->orderByDesc('created_at')
                 ->take($perType)
@@ -112,7 +113,7 @@ class SearchController extends Controller
 
         if (! $type || $type === 'conversations') {
             $conversations = $user->conversations()
-                ->where('title', 'like', "%{$q}%")
+                ->when($q, fn ($query) => $query->where('title', 'like', "%{$q}%"))
                 ->with('messages')
                 ->orderByDesc('created_at')
                 ->take($perType)
@@ -125,7 +126,7 @@ class SearchController extends Controller
         }
 
         return response()->json([
-            'query' => $q,
+            'query' => $q ? $q->toString() : null,
             'type' => $type ? $type->toString() : null,
             'results' => $results,
         ], 200);

@@ -3,7 +3,8 @@
 name: Conversations
 description: |-
 
-  APIs for managing AI chat conversations and sending messages.
+  Chat with the AI assistant to refine and iterate on your post content.
+  Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
 endpoints:
   -
     custom: []
@@ -15,7 +16,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'List conversations'
@@ -23,6 +25,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -116,7 +119,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -130,7 +136,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'List archived conversations'
@@ -138,6 +145,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -219,7 +227,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -233,7 +244,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'Create a conversation'
@@ -241,6 +253,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -286,7 +299,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -300,7 +316,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'Show a conversation'
@@ -308,6 +325,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -352,7 +370,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -366,7 +387,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'Archive a conversation'
@@ -374,6 +396,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -415,7 +438,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -429,7 +455,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'Restore a conversation'
@@ -437,6 +464,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -478,7 +506,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -492,7 +523,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'Permanently delete a conversation'
@@ -500,6 +532,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -541,7 +574,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -555,7 +591,8 @@ endpoints:
       groupName: Conversations
       groupDescription: |-
 
-        APIs for managing AI chat conversations and sending messages.
+        Chat with the AI assistant to refine and iterate on your post content.
+        Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
       subgroup: ''
       subgroupDescription: ''
       title: 'Send a message'
@@ -563,6 +600,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -627,7 +665,10 @@ endpoints:
         headers: []
         description: 'ai rate limited'
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

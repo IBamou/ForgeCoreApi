@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 /**
  * @group Inputs
  *
- * APIs for managing raw content inputs used for post generation.
+ * Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+ * when generating posts. Inputs are combined with a blueprint to produce the final output.
  */
 class InputController extends Controller
 {

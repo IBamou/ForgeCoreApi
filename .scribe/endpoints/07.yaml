@@ -1,7 +1,8 @@
 name: Search
 description: |-
 
-  Global search across posts, blueprints, inputs, and conversations.
+  Search across all your resources — posts, blueprints, inputs, and conversations — from a single endpoint.
+  Optionally filter by resource type to narrow results.
 endpoints:
   -
     custom: []
@@ -13,7 +14,8 @@ endpoints:
       groupName: Search
       groupDescription: |-
 
-        Global search across posts, blueprints, inputs, and conversations.
+        Search across all your resources — posts, blueprints, inputs, and conversations — from a single endpoint.
+        Optionally filter by resource type to narrow results.
       subgroup: ''
       subgroupDescription: ''
       title: 'Global search'
@@ -23,6 +25,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -31,8 +34,8 @@ endpoints:
       q:
         custom: []
         name: q
-        description: 'Search query (min 2 characters).'
-        required: true
+        description: 'Search query. Omitting returns all results.'
+        required: false
         example: AI
         type: string
         enumValues: []
@@ -69,20 +72,20 @@ endpoints:
       q:
         custom: []
         name: q
-        description: 'Must be at least 2 characters. Must not be greater than 100 characters.'
-        required: true
+        description: 'Must not be greater than 100 characters.'
+        required: false
         example: b
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: false
+        nullable: true
         deprecated: false
       type:
         custom: []
         name: type
         description: ''
         required: false
-        example: conversations
+        example: posts
         type: string
         enumValues:
           - posts
@@ -94,7 +97,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       q: b
-      type: conversations
+      type: posts
     fileParameters: []
     responses:
       -
@@ -124,7 +127,10 @@ endpoints:
         headers: []
         description: 'validation error'
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

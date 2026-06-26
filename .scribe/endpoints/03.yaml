@@ -1,7 +1,8 @@
 name: Posts
 description: |-
 
-  APIs for managing AI-generated posts.
+  Manage AI-generated posts — create, update, archive, retry generation, and change status.
+  Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
 endpoints:
   -
     custom: []
@@ -13,7 +14,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'List posts'
@@ -21,6 +23,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -126,7 +129,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -140,7 +146,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'List archived posts'
@@ -148,6 +155,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -229,7 +237,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -243,7 +254,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Create a post'
@@ -251,6 +263,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -319,7 +332,10 @@ endpoints:
         headers: []
         description: 'validation error'
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -333,7 +349,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Show a post'
@@ -341,6 +358,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -397,7 +415,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -411,7 +432,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Update a post'
@@ -419,6 +441,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -552,7 +575,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -566,7 +592,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Update post status'
@@ -574,6 +601,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -631,7 +659,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -645,7 +676,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Archive a post'
@@ -653,6 +685,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -694,7 +727,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -708,7 +744,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Restore a post'
@@ -716,6 +753,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -757,7 +795,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -771,7 +812,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Permanently delete a post'
@@ -779,6 +821,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -820,7 +863,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -834,7 +880,8 @@ endpoints:
       groupName: Posts
       groupDescription: |-
 
-        APIs for managing AI-generated posts.
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
       subgroup: ''
       subgroupDescription: ''
       title: 'Retry post generation'
@@ -842,6 +889,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -883,7 +931,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

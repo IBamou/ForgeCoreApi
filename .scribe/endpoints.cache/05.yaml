@@ -3,7 +3,8 @@
 name: Inputs
 description: |-
 
-  APIs for managing raw content inputs used for post generation.
+  Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+  when generating posts. Inputs are combined with a blueprint to produce the final output.
 endpoints:
   -
     custom: []
@@ -15,7 +16,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'List inputs'
@@ -23,6 +25,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -104,7 +107,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -118,7 +124,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'List archived inputs'
@@ -126,6 +133,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -207,7 +215,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -221,7 +232,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'Create an input'
@@ -229,6 +241,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -274,7 +287,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -288,7 +304,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'Show an input'
@@ -296,6 +313,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -340,7 +358,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -354,7 +375,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'Update an input'
@@ -362,6 +384,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -427,7 +450,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -441,7 +467,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'Archive an input'
@@ -449,6 +476,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -490,7 +518,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -504,7 +535,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'Restore an input'
@@ -512,6 +544,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -553,7 +586,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -567,7 +603,8 @@ endpoints:
       groupName: Inputs
       groupDescription: |-
 
-        APIs for managing raw content inputs used for post generation.
+        Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+        when generating posts. Inputs are combined with a blueprint to produce the final output.
       subgroup: ''
       subgroupDescription: ''
       title: 'Permanently delete an input'
@@ -575,6 +612,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -616,7 +654,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

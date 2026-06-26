@@ -11,17 +11,23 @@ use function Knuckles\Scribe\Config\removeStrategies;
 
 return [
     // The HTML <title> for the generated documentation.
-    'title' => config('app.name').' API Documentation',
+    'title' => 'ForgeCore API Documentation',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => '',
+    'description' => 'AI-powered content generation API for creating and managing social media posts.',
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
     'intro_text' => <<<'INTRO'
-            This documentation aims to provide all the information you need to work with our API.
+            Welcome to the ForgeCore API documentation. This API enables AI-powered content generation for social media.
 
-            <aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-            You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+            ## Getting Started
+            1. **Register** an account or **Login** to get your API token
+            2. Include your token in the `Authorization` header: `Bearer your-token`
+            3. Explore the endpoints below
+
+            ## Quick Links
+            - [Postman Collection](/docs.postman)
+            - [OpenAPI Spec](/docs.openapi)
         INTRO,
 
     // The base URL displayed in the docs.
@@ -58,7 +64,7 @@ return [
     'type' => 'laravel',
 
     // See https://scribe.knuckles.wtf/laravel/reference/config#theme for supported options
-    'theme' => 'default',
+    'theme' => 'elements',
 
     'static' => [
         // HTML documentation, assets and Postman collection will be generated to this folder.
@@ -105,17 +111,17 @@ return [
     // How is your API authenticated? This information will be used in the displayed docs, generated examples and response calls.
     'auth' => [
         // Set this to true if ANY endpoints in your API use authentication.
-        'enabled' => false,
+        'enabled' => true,
 
         // Set this to true if your API should be authenticated by default. If so, you must also set `enabled` (above) to true.
         // You can then use @unauthenticated or @authenticated on individual endpoints to change their status from the default.
-        'default' => false,
+        'default' => true,
 
         // Where is the auth value meant to be sent in a request?
         'in' => AuthIn::BEARER->value,
 
         // The name of the auth parameter (e.g. token, key, apiKey) or header (e.g. Authorization, Api-Key).
-        'name' => 'key',
+        'name' => 'token',
 
         // The value of the parameter to be used by Scribe to authenticate response calls.
         // This will NOT be included in the generated documentation. If empty, Scribe will use a random value.
@@ -123,10 +129,19 @@ return [
 
         // Placeholder your users will see for the auth parameter in the example requests.
         // Set this to null if you want Scribe to use a random value as placeholder instead.
-        'placeholder' => '{YOUR_AUTH_KEY}',
+        'placeholder' => '{YOUR_AUTH_TOKEN}',
 
         // Any extra authentication-related info for your users. Markdown and HTML are supported.
-        'extra_info' => 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.',
+        'extra_info' => <<<MARKDOWN
+            You can obtain a token by registering a new account or logging in:
+            - `POST /api/v1/register` — Create account and receive token
+            - `POST /api/v1/login` — Login and receive token
+
+            Include the token in the `Authorization` header:
+            ```
+            Authorization: Bearer your-token-here
+            ```
+        MARKDOWN,
     ],
 
     // Example requests for each endpoint will be shown in each of these languages.
@@ -136,6 +151,8 @@ return [
     'example_languages' => [
         'bash',
         'javascript',
+        'php',
+        'python',
     ],
 
     // Generate a Postman collection (v2.1.0) in addition to HTML docs.
@@ -179,7 +196,16 @@ return [
         // You can override this by listing the groups, subgroups and endpoints here in the order you want them.
         // See https://scribe.knuckles.wtf/blog/laravel-v4#easier-sorting and https://scribe.knuckles.wtf/laravel/reference/config#order for details
         // Note: does not work for `external` docs types
-        'order' => [],
+        'order' => [
+            'Health',
+            'Authentication',
+            'Profile',
+            'Posts',
+            'Blueprints',
+            'Inputs',
+            'Conversations',
+            'Search',
+        ],
     ],
 
     // Custom logo path. This will be used as the value of the src attribute for the <img> tag,

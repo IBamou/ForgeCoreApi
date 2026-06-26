@@ -1,29 +1,57 @@
-# Authenticating requests
+# Authentication
 
-Authenticate requests by including a **Bearer token** in the `Authorization` header.
+ForgeCore uses **token-based authentication** via [Laravel Sanctum](https://laravel.com/docs/sanctum).
 
+## How to get a token
+
+**Register a new account:**
+
+```bash
+curl -X POST http://forgecoreapi.test/api/v1/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"your-password"}'
 ```
-Authorization: Bearer 1|abc123...
+
+**Or log in with existing credentials:**
+
+```bash
+curl -X POST http://forgecoreapi.test/api/v1/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"john@example.com","password":"your-password"}'
 ```
 
-## Obtaining a Token
-
-Register a new account or login to receive an API token:
-
-- `POST /api/v1/register` — Create an account and get a token
-- `POST /api/v1/login` — Login and get a token
-
-The token is returned in the response body:
+Both endpoints return:
 
 ```json
 {
-  "token": "1|abc123...",
-  "user": { ... }
+  "token": "1|abc123def456...",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com"
+  }
 }
 ```
 
-## Token Usage
+## How to use your token
 
-Include the token in subsequent requests as a Bearer token in the `Authorization` header. Tokens are valid until explicitly revoked (via logout).
+Include the token in the `Authorization` header of every request:
 
-**Important**: Most API endpoints require authentication. Unauthenticated requests will receive a `401 Unauthorized` response.
+```
+Authorization: Bearer 1|abc123def456...
+```
+
+Example:
+
+```bash
+curl http://forgecoreapi.test/api/v1/posts \
+  -H "Authorization: Bearer 1|abc123def456..."
+```
+
+## Token lifecycle
+
+- Tokens remain valid until you explicitly **log out**
+- Up to **10 active tokens** per user (oldest are revoked when limit is exceeded)
+- To revoke a token, call `POST /api/v1/logout`
+
+> **Note:** Most endpoints require authentication. Unauthenticated requests receive a `401 Unauthorized` response.

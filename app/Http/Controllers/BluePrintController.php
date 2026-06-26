@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 /**
  * @group Blueprints
  *
- * APIs for managing content blueprints that define tone, platform, and structure rules.
+ * Define reusable content templates that control tone, target platform, length, and style of generated posts.
+ * Blueprints act as the instruction set for the AI, ensuring consistent brand voice across all content.
  */
 class BluePrintController extends Controller
 {

@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\DB;
 /**
  * @group Posts
  *
- * APIs for managing AI-generated posts.
+ * Manage AI-generated posts — create, update, archive, retry generation, and change status.
+ * Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
  */
 class PostController extends Controller
 {

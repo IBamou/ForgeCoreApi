@@ -1,281 +1,213 @@
 @php
-    use Knuckles\Scribe\Tools\Utils as u;
-    /** @var  Knuckles\Camel\Output\OutputEndpointData $endpoint */
+    /** @var \Knuckles\Camel\Output\OutputEndpointData $endpoint */
 @endphp
 
-<div class="sl-stack sl-stack--vertical sl-stack--8 HttpOperation sl-flex sl-flex-col sl-items-stretch sl-w-full">
-    <div class="sl-stack sl-stack--vertical sl-stack--5 sl-flex sl-flex-col sl-items-stretch">
-        <div class="sl-relative">
-            <div class="sl-stack sl-stack--horizontal sl-stack--5 sl-flex sl-flex-row sl-items-center">
-                <h2 class="sl-text-3xl sl-leading-tight sl-font-prose sl-text-heading sl-mt-5 sl-mb-1"
-                    id="{!! $endpoint->fullSlug() !!}">
-                    {{ $endpoint->name() }}
-                </h2>
-            </div>
-        </div>
-
-        <div class="sl-relative">
-            <div title="{!! rtrim($baseUrl, '/') . '/'. ltrim($endpoint->uri, '/') !!}"
-                     class="sl-stack sl-stack--horizontal sl-stack--3 sl-inline-flex sl-flex-row sl-items-center sl-max-w-full sl-font-mono sl-py-2 sl-pr-4 sl-bg-canvas-50 sl-rounded-lg"
-                >
+<div class="endpoint-section" id="{{ $endpoint->fullSlug() }}">
+    <div class="endpoint-content-grid">
+        {{-- Main documentation content --}}
+        <div class="endpoint-docs">
+            {{-- Endpoint header card --}}
+            <div class="card">
+                <div class="card-header">
                     @foreach($endpoint->httpMethods as $method)
-                        <div class="sl-text-lg sl-font-semibold sl-px-2.5 sl-py-1 sl-text-on-primary sl-rounded-lg"
-                             style="background-color: {{ \Knuckles\Scribe\Tools\WritingUtils::$httpMethodToCssColour[$method] }};"
-                        >
-                            {{ $method }}
-                        </div>
+                        <span class="badge badge-{{ strtolower($method) }}">{{ $method }}</span>
                     @endforeach
-                    <div class="sl-flex sl-overflow-x-hidden sl-text-lg sl-select-all">
-                        <div dir="rtl"
-                             class="sl-overflow-x-hidden sl-truncate sl-text-muted">{!! rtrim($baseUrl, '/') !!}</div>
-                        <div class="sl-flex-1 sl-font-semibold">/{{ ltrim($endpoint->uri, '/') }}</div>
-                    </div>
-
-                        @if($endpoint->metadata->authenticated)
-                            <div class="sl-font-prose sl-font-semibold sl-px-1.5 sl-py-0.5 sl-text-on-primary sl-rounded-lg"
-                                 style="background-color: darkred"
-                            >requires authentication
+                    <span class="endpoint-url">{{ $endpoint->uri }}</span>
+                    @if($endpoint->isAuthed())
+                        <span class="badge" style="background:var(--hover);color:var(--text-muted);border-color:var(--border);font-size:10px;padding:2px 7px;">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:2px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            Auth
+                        </span>
+                    @endif
+                </div>
+                <div class="card-body">
+                    @if($endpoint->metadata->title)
+                        <h3 style="margin-top:0;">{{ $endpoint->name() }}</h3>
+                    @endif
+                    @if($endpoint->metadata->description)
+                        <div style="margin-bottom:16px;">
+                            {!! Parsedown::instance()->text($endpoint->metadata->description) !!}
+                        </div>
+                    @endif
+                    @if($endpoint->boundUri)
+                        <div class="details-box" style="margin-bottom:0;">
+                            <div class="details-title" onclick="this.parentElement.classList.toggle('is-open')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                Request URL
                             </div>
-                        @endif
-                        @if($endpoint->metadata->deprecated === true)
-                            <div class="sl-font-prose sl-font-semibold sl-px-1.5 sl-py-0.5 sl-text-on-primary sl-rounded-lg"
-                                 style="background-color: darkgoldenrod"
-                            >deprecated
-                            </div>
-                        @endif
-                        @if(is_string($endpoint->metadata->deprecated))
-                            <div class="sl-font-prose sl-font-semibold sl-px-1.5 sl-py-0.5 sl-text-on-primary sl-rounded-lg"
-                                 style="background-color: darkgoldenrod"
-                            >deprecated:{{$endpoint->metadata->deprecated}}
-                            </div>
-                        @endif
-            </div>
-        </div>
-
-        {!! Parsedown::instance()->text($endpoint->metadata->description ?: '') !!}
-    </div>
-    <div class="sl-flex">
-        <div data-testid="two-column-left" class="sl-flex-1 sl-w-0">
-            <div class="sl-stack sl-stack--vertical sl-stack--10 sl-flex sl-flex-col sl-items-stretch">
-                <div class="sl-stack sl-stack--vertical sl-stack--8 sl-flex sl-flex-col sl-items-stretch">
-                    @if(count($endpoint->headers))
-                        <div class="sl-stack sl-stack--vertical sl-stack--5 sl-flex sl-flex-col sl-items-stretch">
-                            <h3 class="sl-text-2xl sl-leading-snug sl-font-prose">
-                                {{ u::trans("scribe::endpoint.headers") }}
-                            </h3>
-                            <div class="sl-text-sm">
-                                @foreach($endpoint->headers as $header => $value)
-                                    @component('scribe::themes.elements.components.field-details', [
-                                      'name' => $header,
-                                      'type' => null,
-                                      'required' => false,
-                                      'deprecated' => false,
-                                      'description' => null,
-                                      'example' => $value,
-                                      'endpointId' => $endpoint->endpointId(),
-                                      'component' => 'header',
-                                      'isInput' => true,
-                                    ])
-                                    @endcomponent
-                                @endforeach
+                            <div class="details-body">
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">{{ url($endpoint->boundUri) }}</code>
                             </div>
                         </div>
                     @endif
-
-                    @if(count($endpoint->urlParameters))
-                        <div class="sl-stack sl-stack--vertical sl-stack--6 sl-flex sl-flex-col sl-items-stretch">
-                            <h3 class="sl-text-2xl sl-leading-snug sl-font-prose">{{ u::trans("scribe::endpoint.url_parameters") }}</h3>
-
-                            <div class="sl-text-sm">
-                                @foreach($endpoint->urlParameters as $attribute => $parameter)
-                                    @component('scribe::themes.elements.components.field-details', [
-                                      'name' => $parameter->name,
-                                      'type' => $parameter->type ?? 'string',
-                                      'required' => $parameter->required,
-                                      'deprecated' => $parameter->deprecated,
-                                      'description' => $parameter->description,
-                                      'example' => $parameter->example ?? '',
-                                      'enumValues' => $parameter->enumValues,
-                                      'endpointId' => $endpoint->endpointId(),
-                                      'component' => 'url',
-                                      'isInput' => true,
-                                    ])
-                                    @endcomponent
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-
-                    @if(count($endpoint->queryParameters))
-                            <div class="sl-stack sl-stack--vertical sl-stack--6 sl-flex sl-flex-col sl-items-stretch">
-                                <h3 class="sl-text-2xl sl-leading-snug sl-font-prose">{{ u::trans("scribe::endpoint.query_parameters") }}</h3>
-
-                                <div class="sl-text-sm">
-                                    @foreach($endpoint->queryParameters as $attribute => $parameter)
-                                        @component('scribe::themes.elements.components.field-details', [
-                                          'name' => $parameter->name,
-                                          'type' => $parameter->type,
-                                          'required' => $parameter->required,
-                                          'deprecated' => $parameter->deprecated,
-                                          'description' => $parameter->description,
-                                          'example' => $parameter->example ?? '',
-                                          'enumValues' => $parameter->enumValues,
-                                          'endpointId' => $endpoint->endpointId(),
-                                          'component' => 'query',
-                                          'isInput' => true,
-                                        ])
-                                        @endcomponent
-                                    @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    @if(count($endpoint->nestedBodyParameters))
-                        <div class="sl-stack sl-stack--vertical sl-stack--6 sl-flex sl-flex-col sl-items-stretch">
-                            <h3 class="sl-text-2xl sl-leading-snug sl-font-prose">{{ u::trans("scribe::endpoint.body_parameters") }}</h3>
-
-                                <div class="sl-text-sm">
-                                    @component('scribe::themes.elements.components.nested-fields', [
-                                      'fields' => $endpoint->nestedBodyParameters,
-                                      'endpointId' => $endpoint->endpointId(),
-                                    ])
-                                    @endcomponent
-                            </div>
-                        </div>
-                    @endif
-
-                    @if(count($endpoint->responseFields))
-                            <div class="sl-stack sl-stack--vertical sl-stack--6 sl-flex sl-flex-col sl-items-stretch">
-                                <h3 class="sl-text-2xl sl-leading-snug sl-font-prose">{{ u::trans("scribe::endpoint.response_fields") }}</h3>
-
-                                <div class="sl-text-sm">
-                                    @component('scribe::themes.elements.components.nested-fields', [
-                                      'fields' => $endpoint->nestedResponseFields,
-                                      'endpointId' => $endpoint->endpointId(),
-                                      'isInput' => false,
-                                    ])
-                                    @endcomponent
-                                </div>
-                            </div>
-                        @endif
                 </div>
             </div>
-        </div>
 
-        <div data-testid="two-column-right" class="sl-relative sl-w-2/5 sl-ml-16" style="max-width: 500px;">
-            <div class="sl-stack sl-stack--vertical sl-stack--6 sl-flex sl-flex-col sl-items-stretch">
-
-                @if($metadata['try_it_out']['enabled'] ?? false)
-                    @include("scribe::themes.elements.try_it_out")
-                @endif
-
-                    @if($metadata['example_languages'])
-                        <div class="sl-panel sl-outline-none sl-w-full sl-rounded-lg">
-                            <div class="sl-panel__titlebar sl-flex sl-items-center sl-relative focus:sl-z-10 sl-text-base sl-leading-none sl-pr-3 sl-pl-4 sl-bg-canvas-200 sl-text-body sl-border-input focus:sl-border-primary sl-select-none">
-                                <div class="sl-flex sl-flex-1 sl-items-center sl-h-lg">
-                                    <div class="sl--ml-2">
-                                        {{ u::trans("scribe::endpoint.example_request") }}:
-                                        <select class="example-request-lang-toggle sl-text-base"
-                                                aria-label="Request Sample Language"
-                                                onchange="switchExampleLanguage(event.target.value);">
-                                            @foreach($metadata['example_languages'] as $language)
-                                                <option>{{ $language }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+            {{-- Auth & Headers --}}
+            @if($endpoint->isAuthed() || count($endpoint->headers))
+                <div style="margin-bottom:24px;">
+                    @if($endpoint->isAuthed())
+                        <div class="details-box">
+                            <div class="details-title" onclick="this.parentElement.classList.toggle('is-open')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                Headers
                             </div>
-                            @foreach($metadata['example_languages'] as $index => $language)
-                                <div class="sl-bg-canvas-100 example-request example-request-{{ $language }}"
-                                     style="{{ $index == 0 ? '' : 'display: none;' }}">
-                                    <div class="sl-px-0 sl-py-1">
-                                        <div style="max-height: 400px;" class="sl-overflow-y-auto sl-rounded">
-                                            @include("scribe::partials.example-requests.$language")
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+                            <div class="details-body">
+                                <table>
+                                    <thead><tr><th>Name</th><th>Value</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><code>Authorization</code></td><td><code>Bearer {token}</code></td></tr>
+                                        <tr><td><code>Content-Type</code></td><td><code>application/json</code></td></tr>
+                                        <tr><td><code>Accept</code></td><td><code>application/json</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     @endif
-
-                    @if($endpoint->isGet() || $endpoint->hasResponses())
-                        <div class="sl-panel sl-outline-none sl-w-full sl-rounded-lg">
-                            <div class="sl-panel__titlebar sl-flex sl-items-center sl-relative focus:sl-z-10 sl-text-base sl-leading-none sl-pr-3 sl-pl-4 sl-bg-canvas-200 sl-text-body sl-border-input focus:sl-border-primary sl-select-none">
-                                <div class="sl-flex sl-flex-1 sl-items-center sl-py-2">
-                                    <div class="sl--ml-2">
-                                        <div class="sl-h-sm sl-text-base sl-font-medium sl-px-1.5 sl-text-muted sl-rounded sl-border-transparent sl-border">
-                                            <div class="sl-mb-2 sl-inline-block">{{ u::trans("scribe::endpoint.example_response") }}:</div>
-                                            <div class="sl-mb-2 sl-inline-block">
-                                                <select
-                                                        class="example-response-{{ $endpoint->endpointId() }}-toggle sl-text-base"
-                                                        aria-label="Response sample"
-                                                        onchange="switchExampleResponse('{{ $endpoint->endpointId() }}', event.target.value);">
-                                                    @foreach($endpoint->responses as $index => $response)
-                                                        <option value="{{ $index }}">{{ $response->fullDescription() }}</option>
-                                                    @endforeach
-                                                </select></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button"
-                                        class="sl-button sl-h-sm sl-text-base sl-font-medium sl-px-1.5 hover:sl-bg-canvas-50 active:sl-bg-canvas-100 sl-text-muted hover:sl-text-body focus:sl-text-body sl-rounded sl-border-transparent sl-border disabled:sl-opacity-70">
-                                    <div class="sl-mx-0">
-                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy"
-                                             class="svg-inline--fa fa-copy fa-fw fa-sm sl-icon" role="img"
-                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                            <path fill="currentColor"
-                                                  d="M384 96L384 0h-112c-26.51 0-48 21.49-48 48v288c0 26.51 21.49 48 48 48H464c26.51 0 48-21.49 48-48V128h-95.1C398.4 128 384 113.6 384 96zM416 0v96h96L416 0zM192 352V128h-144c-26.51 0-48 21.49-48 48v288c0 26.51 21.49 48 48 48h192c26.51 0 48-21.49 48-48L288 416h-32C220.7 416 192 387.3 192 352z"></path>
-                                        </svg>
-                                    </div>
-                                </button>
+                    @if(count($endpoint->headers))
+                        <div class="details-box">
+                            <div class="details-title" onclick="this.parentElement.classList.toggle('is-open')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+                                Custom Headers
                             </div>
-                            @foreach($endpoint->responses as $index => $response)
-                                <div class="sl-panel__content-wrapper sl-bg-canvas-100 example-response-{{ $endpoint->endpointId() }} example-response-{{ $endpoint->endpointId() }}-{{ $index }}"
-                                     style=" {{ $index == 0 ? '' : 'display: none;' }}"
-                                >
-                                    <div class="sl-panel__content sl-p-0">@if(count($response->headers))
-                                            <details class="sl-pl-2">
-                                                <summary style="cursor: pointer; list-style: none;">
-                                                    <small>
-                                                        <span class="expansion-chevrons">
-
-    <svg aria-hidden="true" focusable="false" data-prefix="fas"
-         data-icon="chevron-right"
-         class="svg-inline--fa fa-chevron-right fa-fw sl-icon sl-text-muted"
-         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-        <path fill="currentColor"
-              d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
-    </svg>
-                                                            </span>
-                                                        Headers
-                                                    </small>
-                                                </summary>
-                                                @php
-                                                    $headerLines = [];
-                                                    foreach($response->headers as $header => $value) {
-                                                        $headerLines[] = $header . ': ' . (is_array($value) ? implode('; ', $value) : $value);
-                                                    }
-                                                @endphp
-                                                <pre><code class="language-http">{{ implode("\n", $headerLines) }}</code></pre>
-                                            </details>
-                                        @endif
-                                        @if($response->isBinary())
-                                            <pre><code>[{{ u::trans("scribe::endpoint.responses.binary") }}] - {{ htmlentities(str_replace("<<binary>>", "", $response->content)) }}</code></pre>
-                                        @elseif($response->status == 204)
-                                            <pre><code>[{{ u::trans("scribe::endpoint.responses.empty") }}]</code></pre>
-                                        @else
-                                            @php($parsed = json_decode($response->content))
-                                            {{-- If response is a JSON string, prettify it. Otherwise, just print it --}}
-                                            <pre><code style="max-height: 300px;"
-                                                       class="language-json sl-overflow-x-auto sl-overflow-y-auto">{!! htmlentities($parsed != null ? json_encode($parsed, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : $response->content) !!}</code></pre>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
+                            <div class="details-body">
+                                <table>
+                                    <thead><tr><th>Name</th><th>Value</th></tr></thead>
+                                    <tbody>
+                                        @foreach($endpoint->headers as $header => $value)
+                                            <tr><td><code>{{ $header }}</code></td><td><code>{{ $value }}</code></td></tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     @endif
+                </div>
+            @endif
+
+            {{-- URL Parameters --}}
+            @if(count($endpoint->urlParameters))
+                <div class="card">
+                    <div class="card-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                        URL Parameters
+                    </div>
+                    <div class="card-body">
+                        @foreach($endpoint->urlParameters as $param)
+                            <div class="param-row">
+                                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
+                                    <span class="param-name">{{ $param->name }}</span>
+                                    <span class="param-type">{{ $param->type }}</span>
+                                    @if($param->required)<span class="param-required">REQUIRED</span>@endif
+                                </div>
+                                @if($param->description)
+                                    <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
+                                        {!! Parsedown::instance()->text($param->description) !!}
+                                    </div>
+                                @endif
+                                @if($param->example !== null)
+                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">{{ is_array($param->example) ? json_encode($param->example) : $param->example }}</code>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- Query Parameters --}}
+            @if(count($endpoint->queryParameters))
+                <div class="card">
+                    <div class="card-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        Query Parameters
+                    </div>
+                    <div class="card-body">
+                        @foreach($endpoint->queryParameters as $param)
+                            <div class="param-row">
+                                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
+                                    <span class="param-name">{{ $param->name }}</span>
+                                    <span class="param-type">{{ $param->type }}</span>
+                                    @if($param->required)<span class="param-required">REQUIRED</span>@endif
+                                </div>
+                                @if($param->description)
+                                    <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
+                                        {!! Parsedown::instance()->text($param->description) !!}
+                                    </div>
+                                @endif
+                                @if($param->example !== null)
+                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">{{ is_array($param->example) ? json_encode($param->example) : $param->example }}</code>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- Body Parameters --}}
+            @if(count($endpoint->nestedBodyParameters))
+                <div class="card">
+                    <div class="card-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        Body Parameters
+                    </div>
+                    <div class="card-body">
+                        @foreach($endpoint->nestedBodyParameters as $name => $details)
+                            @include('scribe::themes.elements.components.field-details', array_merge($details, [
+                                'name' => $name,
+                                'endpointId' => $endpoint->endpointId(),
+                                'component' => 'body',
+                                'isInput' => true,
+                            ]))
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- Responses --}}
+            @if($endpoint->hasResponses() || count($endpoint->responseFields))
+                <div class="card">
+                    <div class="card-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        Responses
+                    </div>
+                    <div class="card-body">
+                        @foreach($endpoint->responses as $response)
+                            <div style="margin-bottom:20px;@if(!$loop->last)padding-bottom:20px;border-bottom:1px solid var(--border-light);@endif">
+                                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                                    <span class="badge {{ $response->status < 400 ? 'badge-get' : 'badge-delete' }}" style="font-size:11px;padding:2px 8px;">{{ $response->status }}</span>
+                                    @if($response->description)
+                                        <span style="color:var(--text-secondary);font-size:13px;">{{ $response->description }}</span>
+                                    @endif
+                                </div>
+                                @if($response->content)
+                                    <pre><code class="language-json">{{ $response->content }}</code></pre>
+                                @endif
+                            </div>
+                        @endforeach
+
+                        @if(count($endpoint->nestedResponseFields))
+                            <div style="margin-top:16px;">
+                                <h4 style="font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Response Fields</h4>
+                                @foreach($endpoint->nestedResponseFields as $name => $details)
+                                    @include('scribe::themes.elements.components.field-details', array_merge($details, [
+                                        'name' => $name,
+                                        'endpointId' => $endpoint->endpointId(),
+                                        'component' => 'response',
+                                        'isInput' => false,
+                                    ]))
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
         </div>
+
+        {{-- Try It Out (right panel on wide screens) --}}
+        @if($tryItOut['enabled'] ?? true)
+            <div class="endpoint-tryit">
+                @include('scribe::themes.elements.try_it_out')
+            </div>
+        @endif
     </div>
 </div>
-

@@ -1,30 +1,45 @@
-# Introduction
+# Welcome to ForgeCore
 
-ForgeCore is an AI-powered content generation API that helps you create, manage, and optimize social media posts. It provides:
+ForgeCore is an **AI-powered content generation platform** that helps you create, manage, and optimize social media posts at scale.
 
-- **AI Post Generation**: Generate posts using blueprints (tone, platform, structure rules) and raw input content
-- **Blueprint Management**: Define content templates with tone, platform targeting, structure rules, and style guidelines
-- **Input Management**: Store and organize source content for post generation
-- **AI Chat**: Interact with an AI assistant to refine and improve your posts
-- **Global Search**: Search across all your resources from a single endpoint
+## What you can do
 
-## Authentication
+| Feature | Description |
+|---------|-------------|
+| 🤖 **AI Post Generation** | Generate posts using blueprints (tone, platform, structure) and raw source content |
+| 📐 **Blueprints** | Create content templates with tone targeting, platform settings, and style rules |
+| 📝 **Inputs** | Store and organize your source materials for post generation |
+| 💬 **AI Chat** | Refine and improve posts through conversation with the AI assistant |
+| 🔍 **Global Search** | Search across all your resources from a single endpoint |
 
-The API uses Laravel Sanctum token-based authentication. Include your token in the `Authorization` header:
+## Quick start
 
+```bash
+# 1. Register an account
+curl -X POST http://forgecoreapi.test/api/v1/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Your Name","email":"you@example.com","password":"your-password"}'
+
+# 2. Use the returned token in subsequent requests
+curl http://forgecoreapi.test/api/v1/posts \
+  -H "Authorization: Bearer your-token-here"
 ```
-Authorization: Bearer your-api-token-here
-```
 
-## Rate Limiting
+## Base URL
 
-- **Auth endpoints**: 5 requests per minute
-- **API endpoints**: 60 requests per minute
-- **Conversation send**: 10 requests per minute
+All API endpoints are prefixed with `/api/v1/`.
 
-## Error Responses
+## Rate limiting
 
-All errors return consistent JSON responses:
+| Endpoint group | Limit |
+|---------------|-------|
+| Authentication (`/login`, `/register`, etc.) | 5 requests/minute |
+| Conversation messages (`/send`) | 10 requests/minute |
+| General API | 60 requests/minute |
+
+## Error format
+
+All errors return a consistent JSON structure:
 
 ```json
 {
@@ -33,6 +48,7 @@ All errors return consistent JSON responses:
 }
 ```
 
-## Base URL
+## Additional resources
 
-All endpoints are prefixed with `/api/v1/`.
+- [Postman Collection](/docs.postman) — import into Postman
+- [OpenAPI Spec](/docs.openapi) — use with your API client

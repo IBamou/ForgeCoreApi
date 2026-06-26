@@ -19,7 +19,8 @@ use Laravel\Ai\Messages\Message as AiMessage;
 /**
  * @group Conversations
  *
- * APIs for managing AI chat conversations and sending messages.
+ * Chat with the AI assistant to refine and iterate on your post content.
+ * Conversations are tied to a specific post and allow back-and-forth editing of hooks, body points, and hashtags.
  */
 class ConversationController extends Controller
 {

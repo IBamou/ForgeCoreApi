@@ -1,7 +1,7 @@
 name: Profile
 description: |-
 
-  APIs for viewing and updating the authenticated user's profile.
+  View and update the authenticated user's account details, including name, email, and password.
 endpoints:
   -
     custom: []
@@ -13,7 +13,7 @@ endpoints:
       groupName: Profile
       groupDescription: |-
 
-        APIs for viewing and updating the authenticated user's profile.
+        View and update the authenticated user's account details, including name, email, and password.
       subgroup: ''
       subgroupDescription: ''
       title: 'Show profile'
@@ -21,6 +21,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -41,7 +42,10 @@ endpoints:
         headers: []
         description: success
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

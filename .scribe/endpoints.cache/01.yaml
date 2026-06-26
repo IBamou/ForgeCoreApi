@@ -3,7 +3,8 @@
 name: Authentication
 description: |-
 
-  APIs for user authentication, registration, email verification, and password management.
+  Endpoints for user registration, login, logout, email verification, and password reset.
+  These are the only public endpoints that don't require a bearer token.
 endpoints:
   -
     custom: []
@@ -15,14 +16,16 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: Login
       description: 'Authenticates a user and returns an API token.'
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -74,7 +77,10 @@ endpoints:
         headers: []
         description: 'invalid credentials'
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -88,14 +94,16 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: 'Register a new user'
       description: 'Creates a new user account and returns an API token.'
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -163,7 +171,10 @@ endpoints:
         headers: []
         description: 'validation error'
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -177,14 +188,16 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: 'Forgot password'
       description: 'Sends a password reset link to the given email address.'
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -220,7 +233,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -234,14 +250,16 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: 'Reset password'
       description: "Resets the user's password using a valid token."
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -313,7 +331,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -327,14 +348,16 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: 'Verify email'
       description: "Verifies a user's email address using the signed URL from the verification email."
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -388,7 +411,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -402,7 +428,8 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: Logout
@@ -410,6 +437,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -427,7 +455,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -441,7 +472,8 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        APIs for user authentication, registration, email verification, and password management.
+        Endpoints for user registration, login, logout, email verification, and password reset.
+        These are the only public endpoints that don't require a bearer token.
       subgroup: ''
       subgroupDescription: ''
       title: 'Send email verification notification'
@@ -449,6 +481,7 @@ endpoints:
       authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -466,7 +499,10 @@ endpoints:
         headers: []
         description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

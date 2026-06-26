@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @group Profile
  *
- * APIs for viewing and updating the authenticated user's profile.
+ * View and update the authenticated user's account details, including name, email, and password.
  */
 class ProfileController extends Controller
 {

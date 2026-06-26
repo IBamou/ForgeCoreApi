@@ -18,7 +18,8 @@ use Illuminate\Support\Str;
 /**
  * @group Authentication
  *
- * APIs for user authentication, registration, email verification, and password management.
+ * Endpoints for user registration, login, logout, email verification, and password reset.
+ * These are the only public endpoints that don't require a bearer token.
  */
 class AuthController extends Controller
 {
