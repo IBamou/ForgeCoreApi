@@ -10,10 +10,34 @@ use App\Models\Input;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Inputs
+ *
+ * Store and organize source materials (articles, notes, transcripts) that the AI uses as reference
+ * when generating posts. Inputs are combined with a blueprint to produce the final output.
+ */
 class InputController extends Controller
 {
     use FiltersAndSorts;
 
+    /**
+     * List inputs
+     *
+     * Returns a paginated list of inputs for the authenticated user.
+     *
+     * @authenticated
+     *
+     * @queryParam page int Page number. Example: 1
+     * @queryParam per_page int Items per page (1-100). Example: 15
+     * @queryParam search string Search by title or raw input content. Example: article
+     * @queryParam sort string Sort by field (created_at, updated_at, title). Example: created_at
+     * @queryParam direction string Sort direction (asc, desc). Example: desc
+     *
+     * @response 200 scenario="success" {
+     *   "inputs": [{"id": 1, "title": "My Input", "raw_input": "Content...", ...}],
+     *   "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+     * }
+     */
     public function index(Request $request): JsonResponse
     {
         $user = auth()->user();
@@ -51,6 +75,24 @@ class InputController extends Controller
         ], 200);
     }
 
+    /**
+     * List archived inputs
+     *
+     * Returns a paginated list of soft-deleted inputs.
+     *
+     * @authenticated
+     *
+     * @queryParam page int Page number. Example: 1
+     * @queryParam per_page int Items per page (1-100). Example: 15
+     * @queryParam search string Search by title or raw input. Example: article
+     * @queryParam sort string Sort by field (created_at, updated_at, title). Example: created_at
+     * @queryParam direction string Sort direction (asc, desc). Example: desc
+     *
+     * @response 200 scenario="success" {
+     *   "inputs": [{"id": 1, "title": "My Input", ...}],
+     *   "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+     * }
+     */
     public function archived(Request $request): JsonResponse
     {
         $user = auth()->user();
@@ -69,6 +111,18 @@ class InputController extends Controller
         );
     }
 
+    /**
+     * Create an input
+     *
+     * Creates a new raw content input.
+     *
+     * @authenticated
+     *
+     * @response 201 scenario="success" {
+     *   "message": "Input created successfully.",
+     *   "input": {"id": 1, "title": "My Input", "raw_input": "Content...", ...}
+     * }
+     */
     public function store(StoreInputRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -84,6 +138,19 @@ class InputController extends Controller
         ], 201);
     }
 
+    /**
+     * Show an input
+     *
+     * Returns the details of a specific input.
+     *
+     * @authenticated
+     *
+     * @urlParam input int required The input ID. Example: 1
+     *
+     * @response 200 scenario="success" {
+     *   "input": {"id": 1, "title": "My Input", "raw_input": "Content...", ...}
+     * }
+     */
     public function show(Input $input): JsonResponse
     {
         $this->authorize('view', $input);
@@ -95,6 +162,17 @@ class InputController extends Controller
         ], 200);
     }
 
+    /**
+     * Update an input
+     *
+     * Updates the fields of a specific input.
+     *
+     * @authenticated
+     *
+     * @urlParam input int required The input ID. Example: 1
+     *
+     * @response 200 {"message": "Input updated successfully.", "input": {"id": 1, ...}}
+     */
     public function update(UpdateInputRequest $request, Input $input): JsonResponse
     {
         $this->authorize('update', $input);
@@ -109,6 +187,17 @@ class InputController extends Controller
         ], 200);
     }
 
+    /**
+     * Archive an input
+     *
+     * Soft-deletes a specific input.
+     *
+     * @authenticated
+     *
+     * @urlParam input int required The input ID. Example: 1
+     *
+     * @response 200 {"message": "Input archived successfully."}
+     */
     public function archive(Input $input): JsonResponse
     {
         $this->authorize('delete', $input);
@@ -120,6 +209,17 @@ class InputController extends Controller
         ], 200);
     }
 
+    /**
+     * Restore an input
+     *
+     * Restores a soft-deleted input.
+     *
+     * @authenticated
+     *
+     * @urlParam input int required The input ID. Example: 1
+     *
+     * @response 200 {"message": "Input restored successfully.", "input": {"id": 1, ...}}
+     */
     public function restore(Input $input): JsonResponse
     {
         $this->authorize('restore', $input);
@@ -132,6 +232,17 @@ class InputController extends Controller
         ], 200);
     }
 
+    /**
+     * Permanently delete an input
+     *
+     * Force-deletes an input from the database.
+     *
+     * @authenticated
+     *
+     * @urlParam input int required The input ID. Example: 1
+     *
+     * @response 200 {"message": "Input permanently deleted."}
+     */
     public function forceDelete(Input $input): JsonResponse
     {
         $this->authorize('forceDelete', $input);

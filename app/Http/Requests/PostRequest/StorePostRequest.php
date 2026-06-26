@@ -38,4 +38,28 @@ class StorePostRequest extends FormRequest
             'input_id.exists' => 'The selected input is invalid or not available.',
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'title' => [
+                'description' => 'The post title.',
+                'required' => true,
+                'type' => 'string',
+                'example' => 'Understanding AI in Healthcare',
+            ],
+            'blueprint_id' => [
+                'description' => 'The ID of an active blueprint belonging to the user.',
+                'required' => true,
+                'type' => 'integer',
+                'example' => 1,
+            ],
+            'input_id' => [
+                'description' => 'The ID of an input belonging to the user.',
+                'required' => true,
+                'type' => 'integer',
+                'example' => 1,
+            ],
+        ];
+    }
 }

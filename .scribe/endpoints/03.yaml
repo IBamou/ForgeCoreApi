@@ -1,0 +1,940 @@
+name: Posts
+description: |-
+
+  Manage AI-generated posts — create, update, archive, retry generation, and change status.
+  Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/posts
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List posts'
+      description: 'Returns a paginated list of posts for the authenticated user.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'Page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by title, hook proposal or body points.'
+        required: false
+        example: AI
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Filter by status (in_review, draft, posted, archived).'
+        required: false
+        example: draft
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      process_status:
+        custom: []
+        name: process_status
+        description: 'Filter by process status (pending, processing, completed, failed).'
+        required: false
+        example: completed
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort by field (created_at, updated_at, title, status).'
+        required: false
+        example: created_at
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      direction:
+        custom: []
+        name: direction
+        description: 'Sort direction (asc, desc).'
+        required: false
+        example: desc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      search: AI
+      status: draft
+      process_status: completed
+      sort: created_at
+      direction: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "posts": [{"id": 1, "title": "My Post", ...}],
+            "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/posts/archived
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List archived posts'
+      description: 'Returns a paginated list of soft-deleted posts for the authenticated user.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'Page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by title, hook proposal or body points.'
+        required: false
+        example: AI
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort by field (created_at, updated_at, title).'
+        required: false
+        example: created_at
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      direction:
+        custom: []
+        name: direction
+        description: 'Sort direction (asc, desc).'
+        required: false
+        example: desc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      search: AI
+      sort: created_at
+      direction: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "posts": [{"id": 1, "title": "My Post", ...}],
+            "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 1}
+          }
+        headers: []
+        description: success
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/posts/store
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a post'
+      description: 'Creates a new post with a blueprint and input, then queues AI generation.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'The post title.'
+        required: true
+        example: 'Understanding AI in Healthcare'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      blueprint_id:
+        custom: []
+        name: blueprint_id
+        description: 'The ID of an active blueprint belonging to the user.'
+        required: true
+        example: 1
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      input_id:
+        custom: []
+        name: input_id
+        description: 'The ID of an input belonging to the user.'
+        required: true
+        example: 1
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      title: 'Understanding AI in Healthcare'
+      blueprint_id: 1
+      input_id: 1
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "message": "Post created successfully.",
+            "configuration": {"id": 1, "blueprint_id": 1, "input_id": 1, ...},
+            "post": {"id": 1, "title": "My Post", "process_status": "pending", "status": "in_review", ...}
+          }
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Validation failed.",
+            "errors": {"blueprint_id": ["The selected blueprint is invalid or not active."]}
+          }
+        headers: []
+        description: 'validation error'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/posts/{id}'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show a post'
+      description: 'Returns the details of a specific post.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "post": {"id": 1, "title": "My Post", "process_status": "completed", ...}
+          }
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 403
+        content: '{"message": "Forbidden."}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"message": "Resource not found."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/posts/{id}/update'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a post'
+      description: 'Updates the content fields of a specific post.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'The post title.'
+        required: false
+        example: 'The Future of AI in Healthcare'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      hook_proposal:
+        custom: []
+        name: hook_proposal
+        description: 'A hook or opening line for the post. Must not be greater than 500 characters.'
+        required: false
+        example: 'Did you know AI can detect diseases earlier than doctors?'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      body_points:
+        custom: []
+        name: body_points
+        description: 'Must not be greater than 1000 characters.'
+        required: false
+        example:
+          - b
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      suggested_hashtags:
+        custom: []
+        name: suggested_hashtags
+        description: 'Must not be greater than 50 characters.'
+        required: false
+        example:
+          - 'n'
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      technical_readability_score:
+        custom: []
+        name: technical_readability_score
+        description: 'A score from 0 to 100 indicating technical complexity. Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 65
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      tone_compliance_justification:
+        custom: []
+        name: tone_compliance_justification
+        description: 'Explanation of how the post complies with the blueprint tone.'
+        required: false
+        example: 'The post uses professional language with technical depth as required.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'The post status.'
+        required: false
+        example: draft
+        type: string
+        enumValues:
+          - in_review
+          - draft
+          - posted
+          - archived
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      title: 'The Future of AI in Healthcare'
+      hook_proposal: 'Did you know AI can detect diseases earlier than doctors?'
+      body_points:
+        - b
+      suggested_hashtags:
+        - 'n'
+      technical_readability_score: 65
+      tone_compliance_justification: 'The post uses professional language with technical depth as required.'
+      status: draft
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Post updated successfully.", "post": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/posts/{post_id}/updateStatus'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update post status'
+      description: 'Updates only the status of a specific post.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      post_id:
+        custom: []
+        name: post_id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      post_id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      status:
+        custom: []
+        name: status
+        description: 'The new post status. Must be a valid PostStatus enum value.'
+        required: true
+        example: draft
+        type: string
+        enumValues:
+          - in_review
+          - draft
+          - posted
+          - archived
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      status: draft
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Post status updated successfully.", "post": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/posts/{post_id}/archive'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Archive a post'
+      description: 'Soft-deletes a specific post.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      post_id:
+        custom: []
+        name: post_id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      post_id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Post archived successfully."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/posts/{post_id}/restore'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Restore a post'
+      description: 'Restores a soft-deleted post.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      post_id:
+        custom: []
+        name: post_id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      post_id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Post restored successfully.", "post": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/posts/{post_id}/forceDelete'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Permanently delete a post'
+      description: 'Force-deletes a post from the database.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      post_id:
+        custom: []
+        name: post_id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      post_id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Post permanently deleted."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/posts/{post_id}/retry'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Manage AI-generated posts — create, update, archive, retry generation, and change status.
+        Posts are the core output of ForgeCore, combining a blueprint (tone + platform) with input content.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Retry post generation'
+      description: 'Resets the process status to pending and re-queues AI generation.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      post_id:
+        custom: []
+        name: post_id
+        description: 'The ID of the post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      post:
+        custom: []
+        name: post
+        description: 'The post ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      post_id: 1
+      post: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"message": "Post queued for regeneration.", "post": {"id": 1, ...}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

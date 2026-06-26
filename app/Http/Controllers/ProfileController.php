@@ -8,8 +8,24 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @group Profile
+ *
+ * View and update the authenticated user's account details, including name, email, and password.
+ */
 class ProfileController extends Controller
 {
+    /**
+     * Show profile
+     *
+     * Returns the authenticated user's profile information.
+     *
+     * @authenticated
+     *
+     * @response 200 scenario="success" {
+     *   "user": {"id": 1, "name": "John Doe", "email": "john@example.com", "created_at": "2026-01-01T00:00:00.000000Z"}
+     * }
+     */
     public function show(Request $request): JsonResponse
     {
         return response()->json([
@@ -17,6 +33,16 @@ class ProfileController extends Controller
         ], 200);
     }
 
+    /**
+     * Update profile
+     *
+     * Updates the authenticated user's profile fields. Requires current_password when changing password.
+     *
+     * @authenticated
+     *
+     * @response 200 {"message": "Profile updated successfully.", "user": {"id": 1, ...}}
+     * @response 422 {"message": "Current password is incorrect."}
+     */
     public function update(UpdateProfileRequest $request): JsonResponse
     {
         $user = $request->user();

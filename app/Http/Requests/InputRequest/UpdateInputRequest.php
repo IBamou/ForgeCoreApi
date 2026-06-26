@@ -18,4 +18,22 @@ class UpdateInputRequest extends FormRequest
             'raw_input' => ['sometimes', 'string'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'title' => [
+                'description' => 'The input title.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'Updated ML Article',
+            ],
+            'raw_input' => [
+                'description' => 'The raw content or source material.',
+                'required' => false,
+                'type' => 'string',
+                'example' => 'Updated content about machine learning techniques...',
+            ],
+        ];
+    }
 }
