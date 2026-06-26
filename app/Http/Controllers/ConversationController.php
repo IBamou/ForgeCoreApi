@@ -131,7 +131,14 @@ class ConversationController extends Controller
 
         $client = app(AiClient::class);
 
-        $response = $client->prompt($agent, $validated['content']);
+        try {
+            $response = $client->prompt($agent, $validated['content']);
+        } catch (\RuntimeException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'user_message' => MessageResource::make($userMessage),
+            ], $e->getCode() >= 400 ? $e->getCode() : 500);
+        }
 
         $assistantMessage = Message::create([
             'conversation_id' => $conversation->id,
