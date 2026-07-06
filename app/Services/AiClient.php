@@ -15,9 +15,9 @@ class AiClient
 
     public function __construct()
     {
-        $this->provider = config('ai.providers.groq.driver');
-        $this->model = config('ai.providers.groq.model');
-        $this->timeout = (int) config('ai.providers.groq.timeout');
+        $this->provider = config('ai.providers.groq.driver') ?? '';
+        $this->model = config('ai.providers.groq.model') ?? '';
+        $this->timeout = (int) (config('ai.providers.groq.timeout') ?? 120);
     }
 
     public function prompt(Agent $agent, string $prompt): string
