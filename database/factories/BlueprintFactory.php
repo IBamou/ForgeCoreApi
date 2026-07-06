@@ -17,7 +17,7 @@ class BlueprintFactory extends Factory
             'name' => fake()->sentence(3),
             'description' => fake()->paragraph(),
             'tone' => fake()->randomElement(['professional', 'casual', 'technical']),
-            'target_platform' => fake()->randomElement(['x', 'linkedin', 'blog']),
+            'target_platform' => fake()->randomElement(['x', 'linkedin']),
             'max_length' => fake()->randomElement([280, 500, 1000]),
             'structure_rules' => ['hook', 'body_points', 'conclusion'],
             'style_rules' => ['use short sentences'],
