@@ -87,7 +87,7 @@ endpoints:
         name: type
         description: ''
         required: false
-        example: posts
+        example: conversations
         type: string
         enumValues:
           - posts
@@ -99,7 +99,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       q: b
-      type: posts
+      type: conversations
     fileParameters: []
     responses:
       -
