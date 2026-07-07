@@ -132,7 +132,7 @@ return [
         'placeholder' => '{YOUR_AUTH_TOKEN}',
 
         // Any extra authentication-related info for your users. Markdown and HTML are supported.
-        'extra_info' => <<<MARKDOWN
+        'extra_info' => <<<'MARKDOWN'
             You can obtain a token by registering a new account or logging in:
             - `POST /api/v1/register` — Create account and receive token
             - `POST /api/v1/login` — Login and receive token
