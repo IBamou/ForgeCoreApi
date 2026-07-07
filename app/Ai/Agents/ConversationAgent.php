@@ -3,6 +3,9 @@
 namespace App\Ai\Agents;
 
 use App\Ai\Tools\GetPostDetail;
+use App\Ai\Tools\ListBlueprints;
+use App\Ai\Tools\ListInputs;
+use App\Ai\Tools\ListPosts;
 use App\Prompts\ConversationAgentPrompt;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
@@ -38,6 +41,9 @@ class ConversationAgent implements Agent, Conversational, HasTools
     {
         return [
             new GetPostDetail,
+            new ListBlueprints,
+            new ListInputs,
+            new ListPosts,
         ];
     }
 }

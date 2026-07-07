@@ -207,6 +207,13 @@ class ConversationController extends Controller
                     'suggested_hashtags' => $post->suggested_hashtags,
                     'technical_readability_score' => $post->technical_readability_score,
                     'tone_compliance_justification' => $post->tone_compliance_justification,
+                    'blueprint' => [
+                        'name' => $post->configuration->blueprint->name ?? null,
+                        'description' => $post->configuration->blueprint->description ?? null,
+                        'tone' => $post->configuration->blueprint->tone ?? null,
+                        'target_platform' => $post->configuration->blueprint->target_platform ?? null,
+                        'max_length' => $post->configuration->blueprint->max_length ?? null,
+                    ],
                 ];
             }
         }

@@ -677,7 +677,7 @@
     <main id="main">
         <header class="docs-header">
             <h1>ForgeCore API Documentation</h1>
-                            <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Last updated: June 26, 2026</p>
+                            <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Last updated: July 7, 2026</p>
                     </header>
 
                     <div class="auth-section">
@@ -687,124 +687,37 @@
                         Authentication / Authorization
                     </div>
                     <div class="details-body">
-                        <h1 id="authentication">Authentication</h1>
-<p>ForgeCore uses <strong>token-based authentication</strong> via <a href="https://laravel.com/docs/sanctum">Laravel Sanctum</a>.</p>
-<h2 id="how-to-get-a-token">How to get a token</h2>
-<p><strong>Register a new account:</strong></p>
-<pre><code class="language-bash">curl -X POST http://forgecoreapi.test/api/v1/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John Doe","email":"john@example.com","password":"your-password"}'</code></pre>
-<p><strong>Or log in with existing credentials:</strong></p>
-<pre><code class="language-bash">curl -X POST http://forgecoreapi.test/api/v1/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"john@example.com","password":"your-password"}'</code></pre>
-<p>Both endpoints return:</p>
-<pre><code class="language-json">{
-  "token": "1|abc123def456...",
-  "user": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john@example.com"
-  }
-}</code></pre>
-<h2 id="how-to-use-your-token">How to use your token</h2>
-<p>Include the token in the <code>Authorization</code> header of every request:</p>
-<pre><code>Authorization: Bearer 1|abc123def456...</code></pre>
-<p>Example:</p>
-<pre><code class="language-bash">curl http://forgecoreapi.test/api/v1/posts \
-  -H "Authorization: Bearer 1|abc123def456..."</code></pre>
-<h2 id="token-lifecycle">Token lifecycle</h2>
-<ul>
-<li>Tokens remain valid until you explicitly <strong>log out</strong></li>
-<li>Up to <strong>10 active tokens</strong> per user (oldest are revoked when limit is exceeded)</li>
-<li>To revoke a token, call <code>POST /api/v1/logout</code></li>
-</ul>
-<blockquote>
-<p><strong>Note:</strong> Most endpoints require authentication. Unauthenticated requests receive a <code>401 Unauthorized</code> response.</p>
-</blockquote>
+                        <h1 id="authenticating-requests">Authenticating requests</h1>
+<p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_TOKEN}"</code></strong>.</p>
+<p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
+<pre><code>You can obtain a token by registering a new account or logging in:
+- `POST /api/v1/register` — Create account and receive token
+- `POST /api/v1/login` — Login and receive token
+
+Include the token in the `Authorization` header:
+```
+Authorization: Bearer your-token-here
+```</code></pre>
                     </div>
                 </div>
             </div>
         
                     <div style="max-width:680px;margin-bottom:40px;">
-                <h1 id="welcome-to-forgecore">Welcome to ForgeCore</h1>
-<p>ForgeCore is an <strong>AI-powered content generation platform</strong> that helps you create, manage, and optimize social media posts at scale.</p>
-<h2 id="what-you-can-do">What you can do</h2>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>🤖 <strong>AI Post Generation</strong></td>
-<td>Generate posts using blueprints (tone, platform, structure) and raw source content</td>
-</tr>
-<tr>
-<td>📐 <strong>Blueprints</strong></td>
-<td>Create content templates with tone targeting, platform settings, and style rules</td>
-</tr>
-<tr>
-<td>📝 <strong>Inputs</strong></td>
-<td>Store and organize your source materials for post generation</td>
-</tr>
-<tr>
-<td>💬 <strong>AI Chat</strong></td>
-<td>Refine and improve posts through conversation with the AI assistant</td>
-</tr>
-<tr>
-<td>🔍 <strong>Global Search</strong></td>
-<td>Search across all your resources from a single endpoint</td>
-</tr>
-</tbody>
-</table>
-<h2 id="quick-start">Quick start</h2>
-<pre><code class="language-bash"># 1. Register an account
-curl -X POST http://forgecoreapi.test/api/v1/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Your Name","email":"you@example.com","password":"your-password"}'
+                <h1 id="introduction">Introduction</h1>
+<p>AI-powered content generation API for creating and managing social media posts.</p>
+<aside>
+    <strong>Base URL</strong>: <code>http://68.221.142.46</code>
+</aside>
+<pre><code>Welcome to the ForgeCore API documentation. This API enables AI-powered content generation for social media.
 
-# 2. Use the returned token in subsequent requests
-curl http://forgecoreapi.test/api/v1/posts \
-  -H "Authorization: Bearer your-token-here"</code></pre>
-<h2 id="base-url">Base URL</h2>
-<p>All API endpoints are prefixed with <code>/api/v1/</code>.</p>
-<h2 id="rate-limiting">Rate limiting</h2>
-<table>
-<thead>
-<tr>
-<th>Endpoint group</th>
-<th>Limit</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Authentication (<code>/login</code>, <code>/register</code>, etc.)</td>
-<td>5 requests/minute</td>
-</tr>
-<tr>
-<td>Conversation messages (<code>/send</code>)</td>
-<td>10 requests/minute</td>
-</tr>
-<tr>
-<td>General API</td>
-<td>60 requests/minute</td>
-</tr>
-</tbody>
-</table>
-<h2 id="error-format">Error format</h2>
-<p>All errors return a consistent JSON structure:</p>
-<pre><code class="language-json">{
-  "message": "Error description",
-  "errors": {}
-}</code></pre>
-<h2 id="additional-resources">Additional resources</h2>
-<ul>
-<li><a href="/docs.postman">Postman Collection</a> — import into Postman</li>
-<li><a href="/docs.openapi">OpenAPI Spec</a> — use with your API client</li>
-</ul>
+## Getting Started
+1. **Register** an account or **Login** to get your API token
+2. Include your token in the `Authorization` header: `Bearer your-token`
+3. Explore the endpoints below
+
+## Quick Links
+- [Postman Collection](/docs.postman)
+- [OpenAPI Spec](/docs.openapi)</code></pre>
             </div>
         
                     <div class="endpoint-section" id="group-authentication">
@@ -841,7 +754,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/login</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/login</code>
                             </div>
                         </div>
                                     </div>
@@ -1099,7 +1012,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/register</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/register</code>
                             </div>
                         </div>
                                     </div>
@@ -1382,7 +1295,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/forgot-password</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/forgot-password</code>
                             </div>
                         </div>
                                     </div>
@@ -1613,7 +1526,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/reset-password</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/reset-password</code>
                             </div>
                         </div>
                                     </div>
@@ -1910,7 +1823,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/email/verify/1/abc123def456...</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/email/verify/1/abc123def456...</code>
                             </div>
                         </div>
                                     </div>
@@ -2154,7 +2067,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/logout</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/logout</code>
                             </div>
                         </div>
                                     </div>
@@ -2349,7 +2262,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/email/verification-notification</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/email/verification-notification</code>
                             </div>
                         </div>
                                     </div>
@@ -2553,7 +2466,7 @@ These are the only public endpoints that don't require a bearer token.</p>
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/profile</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/profile</code>
                             </div>
                         </div>
                                     </div>
@@ -2761,7 +2674,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts</code>
                             </div>
                         </div>
                                     </div>
@@ -3066,7 +2979,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/archived</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/archived</code>
                             </div>
                         </div>
                                     </div>
@@ -3343,7 +3256,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/store</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/store</code>
                             </div>
                         </div>
                                     </div>
@@ -3627,7 +3540,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16</code>
                             </div>
                         </div>
                                     </div>
@@ -3684,7 +3597,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -3751,7 +3664,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1">
+                <input type="text" data-url-param="id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -3761,7 +3674,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/posts/1', this)">
+            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/posts/16', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -3873,7 +3786,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1/update</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16/update</code>
                             </div>
                         </div>
                                     </div>
@@ -3930,7 +3843,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -4118,7 +4031,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1">
+                <input type="text" data-url-param="id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -4160,7 +4073,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                             </div>
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('PUT', 'api/v1/posts/1/update', this)">
+            <button class="try-it-btn" onclick="sendTryIt('PUT', 'api/v1/posts/16/update', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -4272,7 +4185,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1/updateStatus</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16/updateStatus</code>
                             </div>
                         </div>
                                     </div>
@@ -4329,7 +4242,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -4416,7 +4329,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>post_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="post_id" placeholder="1">
+                <input type="text" data-url-param="post_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -4430,7 +4343,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                             </div>
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('PATCH', 'api/v1/posts/1/updateStatus', this)">
+            <button class="try-it-btn" onclick="sendTryIt('PATCH', 'api/v1/posts/16/updateStatus', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -4542,7 +4455,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1/archive</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16/archive</code>
                             </div>
                         </div>
                                     </div>
@@ -4599,7 +4512,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -4651,7 +4564,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>post_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="post_id" placeholder="1">
+                <input type="text" data-url-param="post_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -4661,7 +4574,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/posts/1/archive', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/posts/16/archive', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -4773,7 +4686,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1/restore</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16/restore</code>
                             </div>
                         </div>
                                     </div>
@@ -4830,7 +4743,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -4882,7 +4795,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>post_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="post_id" placeholder="1">
+                <input type="text" data-url-param="post_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -4892,7 +4805,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/posts/1/restore', this)">
+            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/posts/16/restore', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -5004,7 +4917,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1/forceDelete</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16/forceDelete</code>
                             </div>
                         </div>
                                     </div>
@@ -5061,7 +4974,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -5113,7 +5026,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>post_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="post_id" placeholder="1">
+                <input type="text" data-url-param="post_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -5123,7 +5036,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/posts/1/forceDelete', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/posts/16/forceDelete', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -5235,7 +5148,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/posts/1/retry</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/posts/16/retry</code>
                             </div>
                         </div>
                                     </div>
@@ -5292,7 +5205,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the post.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -5344,7 +5257,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
 
                     <div class="try-it-field">
                 <label>post_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="post_id" placeholder="1">
+                <input type="text" data-url-param="post_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>post <span style="color:#ef4444;">*</span></label>
@@ -5354,7 +5267,7 @@ Posts are the core output of ForgeCore, combining a blueprint (tone + platform) 
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/posts/1/retry', this)">
+            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/posts/16/retry', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -5476,7 +5389,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints</code>
                             </div>
                         </div>
                                     </div>
@@ -5781,7 +5694,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/archived</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/archived</code>
                             </div>
                         </div>
                                     </div>
@@ -6058,7 +5971,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/store</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/store</code>
                             </div>
                         </div>
                                     </div>
@@ -6460,7 +6373,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/1</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/16</code>
                             </div>
                         </div>
                                     </div>
@@ -6517,7 +6430,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the blueprint.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -6572,7 +6485,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1">
+                <input type="text" data-url-param="id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>blueprint <span style="color:#ef4444;">*</span></label>
@@ -6582,7 +6495,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/blueprints/1', this)">
+            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/blueprints/16', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -6694,7 +6607,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/1/update</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/16/update</code>
                             </div>
                         </div>
                                     </div>
@@ -6751,7 +6664,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the blueprint.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -6954,7 +6867,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1">
+                <input type="text" data-url-param="id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>blueprint <span style="color:#ef4444;">*</span></label>
@@ -7002,7 +6915,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                             </div>
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('PUT', 'api/v1/blueprints/1/update', this)">
+            <button class="try-it-btn" onclick="sendTryIt('PUT', 'api/v1/blueprints/16/update', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -7114,7 +7027,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/1/archive</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/16/archive</code>
                             </div>
                         </div>
                                     </div>
@@ -7171,7 +7084,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the blueprint.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -7223,7 +7136,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
 
                     <div class="try-it-field">
                 <label>blueprint_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="blueprint_id" placeholder="1">
+                <input type="text" data-url-param="blueprint_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>blueprint <span style="color:#ef4444;">*</span></label>
@@ -7233,7 +7146,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/blueprints/1/archive', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/blueprints/16/archive', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -7345,7 +7258,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/1/restore</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/16/restore</code>
                             </div>
                         </div>
                                     </div>
@@ -7402,7 +7315,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the blueprint.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -7454,7 +7367,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
 
                     <div class="try-it-field">
                 <label>blueprint_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="blueprint_id" placeholder="1">
+                <input type="text" data-url-param="blueprint_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>blueprint <span style="color:#ef4444;">*</span></label>
@@ -7464,7 +7377,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/blueprints/1/restore', this)">
+            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/blueprints/16/restore', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -7576,7 +7489,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/blueprints/1/forceDelete</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/blueprints/16/forceDelete</code>
                             </div>
                         </div>
                                     </div>
@@ -7633,7 +7546,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the blueprint.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -7685,7 +7598,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
 
                     <div class="try-it-field">
                 <label>blueprint_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="blueprint_id" placeholder="1">
+                <input type="text" data-url-param="blueprint_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>blueprint <span style="color:#ef4444;">*</span></label>
@@ -7695,7 +7608,7 @@ Blueprints act as the instruction set for the AI, ensuring consistent brand voic
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/blueprints/1/forceDelete', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/blueprints/16/forceDelete', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -7817,7 +7730,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs</code>
                             </div>
                         </div>
                                     </div>
@@ -8094,7 +8007,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/archived</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/archived</code>
                             </div>
                         </div>
                                     </div>
@@ -8371,7 +8284,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/store</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/store</code>
                             </div>
                         </div>
                                     </div>
@@ -8622,7 +8535,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/1</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/16</code>
                             </div>
                         </div>
                                     </div>
@@ -8679,7 +8592,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the input.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -8734,7 +8647,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1">
+                <input type="text" data-url-param="id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>input <span style="color:#ef4444;">*</span></label>
@@ -8744,7 +8657,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/inputs/1', this)">
+            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/inputs/16', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -8856,7 +8769,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/1/update</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/16/update</code>
                             </div>
                         </div>
                                     </div>
@@ -8913,7 +8826,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the input.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -9007,7 +8920,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1">
+                <input type="text" data-url-param="id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>input <span style="color:#ef4444;">*</span></label>
@@ -9025,7 +8938,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                             </div>
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('PUT', 'api/v1/inputs/1/update', this)">
+            <button class="try-it-btn" onclick="sendTryIt('PUT', 'api/v1/inputs/16/update', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -9137,7 +9050,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/1/archive</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/16/archive</code>
                             </div>
                         </div>
                                     </div>
@@ -9194,7 +9107,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the input.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -9246,7 +9159,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
 
                     <div class="try-it-field">
                 <label>input_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="input_id" placeholder="1">
+                <input type="text" data-url-param="input_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>input <span style="color:#ef4444;">*</span></label>
@@ -9256,7 +9169,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/inputs/1/archive', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/inputs/16/archive', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -9368,7 +9281,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/1/restore</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/16/restore</code>
                             </div>
                         </div>
                                     </div>
@@ -9425,7 +9338,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the input.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -9477,7 +9390,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
 
                     <div class="try-it-field">
                 <label>input_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="input_id" placeholder="1">
+                <input type="text" data-url-param="input_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>input <span style="color:#ef4444;">*</span></label>
@@ -9487,7 +9400,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/inputs/1/restore', this)">
+            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/inputs/16/restore', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -9599,7 +9512,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/inputs/1/forceDelete</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/inputs/16/forceDelete</code>
                             </div>
                         </div>
                                     </div>
@@ -9656,7 +9569,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the input.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">16</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -9708,7 +9621,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
 
                     <div class="try-it-field">
                 <label>input_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="input_id" placeholder="1">
+                <input type="text" data-url-param="input_id" placeholder="16">
             </div>
                     <div class="try-it-field">
                 <label>input <span style="color:#ef4444;">*</span></label>
@@ -9718,7 +9631,7 @@ when generating posts. Inputs are combined with a blueprint to produce the final
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/inputs/1/forceDelete', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/inputs/16/forceDelete', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -9840,7 +9753,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations</code>
                             </div>
                         </div>
                                     </div>
@@ -10131,7 +10044,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/archived</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/archived</code>
                             </div>
                         </div>
                                     </div>
@@ -10408,7 +10321,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/store</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/store</code>
                             </div>
                         </div>
                                     </div>
@@ -10658,7 +10571,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/architecto</code>
                             </div>
                         </div>
                                     </div>
@@ -10715,7 +10628,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the conversation.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1d7562ac-ae68-4be2-930f-2456d1222dc8</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">architecto</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -10770,7 +10683,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
 
                     <div class="try-it-field">
                 <label>id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="id" placeholder="1d7562ac-ae68-4be2-930f-2456d1222dc8">
+                <input type="text" data-url-param="id" placeholder="architecto">
             </div>
                     <div class="try-it-field">
                 <label>conversation <span style="color:#ef4444;">*</span></label>
@@ -10780,7 +10693,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8', this)">
+            <button class="try-it-btn" onclick="sendTryIt('GET', 'api/v1/conversations/architecto', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -10892,7 +10805,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/archive</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/architecto/archive</code>
                             </div>
                         </div>
                                     </div>
@@ -10949,7 +10862,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the conversation.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1d7562ac-ae68-4be2-930f-2456d1222dc8</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">architecto</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -11001,7 +10914,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
 
                     <div class="try-it-field">
                 <label>conversation_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="conversation_id" placeholder="1d7562ac-ae68-4be2-930f-2456d1222dc8">
+                <input type="text" data-url-param="conversation_id" placeholder="architecto">
             </div>
                     <div class="try-it-field">
                 <label>conversation <span style="color:#ef4444;">*</span></label>
@@ -11011,7 +10924,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/archive', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/conversations/architecto/archive', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -11123,7 +11036,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/restore</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/architecto/restore</code>
                             </div>
                         </div>
                                     </div>
@@ -11180,7 +11093,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the conversation.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1d7562ac-ae68-4be2-930f-2456d1222dc8</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">architecto</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -11232,7 +11145,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
 
                     <div class="try-it-field">
                 <label>conversation_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="conversation_id" placeholder="1d7562ac-ae68-4be2-930f-2456d1222dc8">
+                <input type="text" data-url-param="conversation_id" placeholder="architecto">
             </div>
                     <div class="try-it-field">
                 <label>conversation <span style="color:#ef4444;">*</span></label>
@@ -11242,7 +11155,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/restore', this)">
+            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/conversations/architecto/restore', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -11354,7 +11267,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/forceDelete</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/architecto/forceDelete</code>
                             </div>
                         </div>
                                     </div>
@@ -11411,7 +11324,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the conversation.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1d7562ac-ae68-4be2-930f-2456d1222dc8</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">architecto</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -11463,7 +11376,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
 
                     <div class="try-it-field">
                 <label>conversation_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="conversation_id" placeholder="1d7562ac-ae68-4be2-930f-2456d1222dc8">
+                <input type="text" data-url-param="conversation_id" placeholder="architecto">
             </div>
                     <div class="try-it-field">
                 <label>conversation <span style="color:#ef4444;">*</span></label>
@@ -11473,7 +11386,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
         
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/forceDelete', this)">
+            <button class="try-it-btn" onclick="sendTryIt('DELETE', 'api/v1/conversations/architecto/forceDelete', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -11585,7 +11498,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/send</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/conversations/architecto/send</code>
                             </div>
                         </div>
                                     </div>
@@ -11642,7 +11555,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                                                                     <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">
                                         <p>The ID of the conversation.</p>
                                     </div>
-                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">1d7562ac-ae68-4be2-930f-2456d1222dc8</code>
+                                                                                                    <code style="margin-top:4px;display:inline-block;word-break:normal;overflow-wrap:break-word;">architecto</code>
                                                             </div>
                                                     <div class="param-row">
                                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
@@ -11732,7 +11645,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
 
                     <div class="try-it-field">
                 <label>conversation_id <span style="color:#ef4444;">*</span></label>
-                <input type="text" data-url-param="conversation_id" placeholder="1d7562ac-ae68-4be2-930f-2456d1222dc8">
+                <input type="text" data-url-param="conversation_id" placeholder="architecto">
             </div>
                     <div class="try-it-field">
                 <label>conversation <span style="color:#ef4444;">*</span></label>
@@ -11746,7 +11659,7 @@ Conversations are tied to a specific post and allow back-and-forth editing of ho
                             </div>
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
-            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/conversations/1d7562ac-ae68-4be2-930f-2456d1222dc8/send', this)">
+            <button class="try-it-btn" onclick="sendTryIt('POST', 'api/v1/conversations/architecto/send', this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Send Request
             </button>
@@ -11869,7 +11782,7 @@ Each result type returns up to <code>per_type</code> items (default 5, max 20).<
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/search</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/search</code>
                             </div>
                         </div>
                                     </div>
@@ -11996,7 +11909,7 @@ Each result type returns up to <code>per_type</code> items (default 5, max 20).<
     
                         <div style="margin-top:4px;display:flex;align-items:center;gap:4px;color:var(--text-muted);font-size:12px;">
                 <span>Example:</span>
-                <code style="font-size:12px;">posts</code>
+                <code style="font-size:12px;">conversations</code>
             </div>
             
     </div>
@@ -12074,7 +11987,7 @@ Each result type returns up to <code>per_type</code> items (default 5, max 20).<
                             </div>
                     <div class="try-it-field">
                 <label>type</label>
-                                    <input type="text" data-body-param="type" placeholder="posts">
+                                    <input type="text" data-body-param="type" placeholder="conversations">
                             </div>
         
         <div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
@@ -12192,7 +12105,7 @@ Each result type returns up to <code>per_type</code> items (default 5, max 20).<
                                 Request URL
                             </div>
                             <div class="details-body">
-                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://forgecoreapi.test/api/v1/health</code>
+                                <code style="background:none;padding:0;color:var(--text);font-size:13px;">http://68.221.142.46/api/v1/health</code>
                             </div>
                         </div>
                                     </div>
@@ -12251,7 +12164,7 @@ Each result type returns up to <code>per_type</code> items (default 5, max 20).<
                                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                                     <span class="badge badge-get" style="font-size:11px;padding:2px 8px;">200</span>
                                                                     </div>
-                                                                    <pre><code class="language-json">{&quot;status&quot;:&quot;healthy&quot;,&quot;timestamp&quot;:&quot;2026-06-26T16:13:37+00:00&quot;}</code></pre>
+                                                                    <pre><code class="language-json">{&quot;status&quot;:&quot;healthy&quot;,&quot;timestamp&quot;:&quot;2026-07-07T15:12:40+00:00&quot;}</code></pre>
                                                             </div>
                         
                                             </div>

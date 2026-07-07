@@ -367,7 +367,7 @@ endpoints:
         name: id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -385,7 +385,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 1
+      id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -450,7 +450,7 @@ endpoints:
         name: id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -468,7 +468,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 1
+      id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -610,7 +610,7 @@ endpoints:
         name: post_id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -628,7 +628,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      post_id: 1
+      post_id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -694,7 +694,7 @@ endpoints:
         name: post_id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -712,7 +712,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      post_id: 1
+      post_id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -762,7 +762,7 @@ endpoints:
         name: post_id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -780,7 +780,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      post_id: 1
+      post_id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -830,7 +830,7 @@ endpoints:
         name: post_id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -848,7 +848,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      post_id: 1
+      post_id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -898,7 +898,7 @@ endpoints:
         name: post_id
         description: 'The ID of the post.'
         required: true
-        example: 1
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -916,7 +916,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      post_id: 1
+      post_id: 16
       post: 1
     queryParameters: []
     cleanQueryParameters: []
