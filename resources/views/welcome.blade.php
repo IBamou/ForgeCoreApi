@@ -125,15 +125,15 @@
 
         <div class="cards">
             <div class="card">
-                <h3>Authentication</h3>
-                <p>Register and manage API access</p>
+                <h3>Blueprints</h3>
+                <p>Design and configure content blueprints</p>
                 <div class="endpoint">
-                    <span class="method method-post">POST</span>
-                    <code>/api/v1/register</code>
+                    <span class="method method-get">GET</span>
+                    <code>/api/v1/blueprints</code>
                 </div>
                 <div class="endpoint">
                     <span class="method method-post">POST</span>
-                    <code>/api/v1/login</code>
+                    <code>/api/v1/blueprints</code>
                 </div>
             </div>
 
