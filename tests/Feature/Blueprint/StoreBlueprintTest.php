@@ -12,8 +12,8 @@ test('Store Blueprint success', function () {
     $user = User::factory()->create();
 
     $blueprint = collect(Blueprint::factory()->make()->toArray())
-    ->except(['user_id', 'is_active'])
-    ->toArray();
+        ->except(['user_id', 'is_active'])
+        ->toArray();
 
     Sanctum::actingAs($user, ['*']);
 
@@ -26,7 +26,7 @@ test('Store Blueprint success', function () {
 
     $response->assertJsonStructure([
         'message',
-        'blueprint'
+        'blueprint',
     ])->assertStatus(201);
 });
 
@@ -35,8 +35,8 @@ test('Store Blueprint failed : missing data', function () {
     $user = User::factory()->create();
 
     $blueprint = collect(Blueprint::factory()->make()->toArray())
-    ->except(['user_id', 'is_active', 'name'])
-    ->toArray(); // Missing name
+        ->except(['user_id', 'is_active', 'name'])
+        ->toArray(); // Missing name
 
     Sanctum::actingAs($user, ['*']);
 
@@ -49,6 +49,6 @@ test('Store Blueprint failed : missing data', function () {
 
     $response->assertJsonStructure([
         'message',
-        'errors'
+        'errors',
     ])->assertStatus(422);
 });

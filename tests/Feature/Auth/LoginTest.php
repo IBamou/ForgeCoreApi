@@ -44,10 +44,9 @@ test('Login failed: missing data', function () {
     // $response->dump();
     $response->assertJsonStructure([
         'message',
-        'errors'
+        'errors',
     ])->assertStatus(422);
 });
-
 
 test('Login failed: invalid data', function () {
     // Arrange
