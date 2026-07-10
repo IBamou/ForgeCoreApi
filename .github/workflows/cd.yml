@@ -17,11 +17,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/threadforge-api
+            cd /var/www/ForgeCoreApi
             git pull origin main
             composer install --no-dev --optimize-autoloader --no-interaction
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            sudo supervisorctl restart threadforge-worker:*
+            sudo supervisorctl restart forgecore-worker:*
