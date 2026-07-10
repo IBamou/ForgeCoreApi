@@ -1,58 +1,176 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ForgeCore API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+AI-powered content generation API for creating and managing social media posts.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+ForgeCore generates social media content using AI (Groq API). Users define **Blueprints** (post templates with tone, platform, length rules) and **Inputs** (raw content), then generate **Posts** via AI. Conversations with an AI agent help refine posts.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **AI Engine:** Groq (Llama 4 Scout 17B)
+- **Queue:** Database-driven (Supervisor workers)
+- **Auth:** Laravel Sanctum tokens
+- **Docs:** Scribe — visit `/docs` after deployment
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+| Layer | Technology |
+|---|---|
+| Framework | Laravel 13 / PHP 8.4 |
+| Database | MySQL 8.0 |
+| Cache | Database (configurable to Redis) |
+| Queue | Database |
+| Queue Worker | Supervisor (2 processes) |
+| AI Provider | Groq API |
+| Server | Ubuntu 24.04 / Nginx / PHP-FPM |
+| CI/CD | GitHub Actions (Pint → Tests → Deploy) |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Prerequisites
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.4+
+- Composer
+- MySQL 8.0+
+- Redis (optional, for cache)
+- Node.js & npm (for Vite/assets)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Local Setup
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone the repository
+git clone https://github.com/IBamou/ForgeCoreApi.git
+cd ForgeCoreApi
 
-php artisan boost:install
+# 2. Install PHP dependencies
+composer install
+
+# 3. Environment configuration
+cp .env.example .env
+php artisan key:generate
+
+# 4. Configure .env
+#    - Set DB_DATABASE, DB_USERNAME, DB_PASSWORD
+#    - Set GROQ_API_KEY (get one at https://console.groq.com)
+
+# 5. Run migrations
+php artisan migrate
+
+# 6. Start the development server
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Environment Variables
 
-## Contributing
+| Variable | Description | Default |
+|---|---|---|
+| `APP_ENV` | Environment mode | `local` |
+| `APP_DEBUG` | Debug mode | `true` |
+| `APP_URL` | Application URL | `http://localhost` |
+| `DB_CONNECTION` | Database driver | `mysql` |
+| `DB_DATABASE` | Database name | `forgecoreapi` |
+| `QUEUE_CONNECTION` | Queue driver | `database` |
+| `GROQ_API_KEY` | Groq API key | — |
+| `GROQ_MODEL` | AI model | `meta-llama/llama-4-scout-17b-16e-instruct` |
+| `GROQ_BASE_URL` | Groq API endpoint | `https://api.groq.com/openai/v1` |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Queue Workers
 
-## Code of Conduct
+Posts are generated asynchronously via the queue. Run the worker locally:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan queue:work
+```
 
-## Security Vulnerabilities
+In production, Supervisor manages 2 workers:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+sudo supervisorctl status forgecore-worker:*
+```
+
+## API Endpoints
+
+Full documentation is available at `/docs` when the app is running.
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/register` | Create account (returns token) |
+| POST | `/api/v1/login` | Login (returns token) |
+
+All other endpoints require `Authorization: Bearer {token}`.
+
+### Posts
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/posts` | List posts |
+| POST | `/api/v1/posts/store` | Generate a new post |
+| GET | `/api/v1/posts/{id}` | Get post details |
+| PUT | `/api/v1/posts/{id}/update` | Update post |
+| DELETE | `/api/v1/posts/{id}/archive` | Archive post |
+| POST | `/api/v1/posts/{id}/retry` | Retry failed generation |
+
+### Blueprints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/blueprints` | List blueprints |
+| POST | `/api/v1/blueprints/store` | Create blueprint |
+| GET | `/api/v1/blueprints/{id}` | Get blueprint |
+| PUT | `/api/v1/blueprints/{id}/update` | Update blueprint |
+
+### Inputs
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/inputs` | List inputs |
+| POST | `/api/v1/inputs/store` | Create input |
+| GET | `/api/v1/inputs/{id}` | Get input |
+
+### Conversations (AI Chat)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/conversations` | List conversations |
+| POST | `/api/v1/conversations/store` | Create conversation |
+| POST | `/api/v1/conversations/{id}/send` | Send message (gets AI reply) |
+
+## Deployment
+
+### Production Server (Azure VM)
+
+The server runs Ubuntu 24.04 with:
+- **Nginx** serving `/var/www/ForgeCoreApi/public`
+- **PHP-FPM** 8.4
+- **MySQL** 8.0
+- **Supervisor** managing queue workers
+- **Redis** (optional)
+
+**SSH access:**
+```bash
+ssh -i "path/to/key.pem" ibamou@68.221.142.46
+```
+
+### CI/CD Pipeline
+
+On push to `main`, GitHub Actions:
+1. **Lint:** Runs `pint --test` (code style)
+2. **Tests:** Runs `php artisan test` with MySQL service
+3. **Deploy:** SSHs into the VM, pulls changes, installs deps, migrates, caches, restarts workers
+
+### Manual Deploy
+
+```bash
+ssh -i "path/to/key.pem" ibamou@68.221.142.46
+cd /var/www/ForgeCoreApi
+git pull origin main
+composer install --no-dev --optimize-autoloader --no-interaction
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+sudo supervisorctl restart forgecore-worker:*
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
